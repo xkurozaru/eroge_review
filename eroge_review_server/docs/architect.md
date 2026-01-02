@@ -16,14 +16,14 @@ DDD + Clean Architecture + CQRS + Feature directory
     - command_service.py（Enterprise Business Rule）
     - model.py（Domain Model）
     - mapper.py（Data Access）
-  - review
+  - game_review
   - etc...
-- controller
+- showcase
   - server.py
   - game_spec
     - handler.py（Controller）
     - application.py（Application Business Rule）
-  - review
+  - game_review
   - etc...
 - console
   - server.py
