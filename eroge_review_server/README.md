@@ -58,6 +58,23 @@ atlas schema apply -u "$ATLAS_DATABASE_URL" --to "file://db/schema.sql" --dev-ur
 atlas schema apply -u "$ATLAS_DATABASE_URL" --to "file://db/schema.sql" --dev-url "$ATLAS_DEV_URL"
 ```
 
+## OpenAPI（3.0）
+
+FastAPI が OpenAPI を生成します（OpenAPI 3.0.2 に固定）。
+
+- Controller Server: `GET /openapi.json`（Swagger UI は `GET /docs`）
+- Console Server: `GET /openapi.json`（Swagger UI は `GET /docs`）
+
+ファイルに出力する場合:
+
+```bash
+# controller の OpenAPI を出力
+bash ./scripts/export_openapi.sh controller ./openapi-controller.json
+
+# console の OpenAPI を出力
+bash ./scripts/export_openapi.sh console ./openapi-console.json
+```
+
 ## 環境変数
 
 `.env` を作る場合は `.env.example` を参考にしてください。
