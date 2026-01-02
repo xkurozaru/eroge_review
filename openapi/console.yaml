@@ -203,6 +203,17 @@ components:
   schemas:
     GameSpec:
       properties:
+        id:
+          type: string
+          title: Id
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        updated_at:
+          type: string
+          format: date-time
+          title: Updated At
         title:
           type: string
           title: Title
@@ -213,11 +224,10 @@ components:
           type: string
           format: date
           title: Release Date
-        id:
-          type: string
-          title: Id
       type: object
       required:
+      - created_at
+      - updated_at
       - title
       - brand
       - release_date

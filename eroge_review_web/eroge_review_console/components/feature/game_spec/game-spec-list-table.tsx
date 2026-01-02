@@ -1,5 +1,7 @@
 import Link from "next/link";
 
+import { format, isValid, parseISO } from "date-fns";
+
 import {
   Table,
   TableBody,
@@ -12,9 +14,18 @@ import {
 export type GameSpecListItem = {
   id?: string;
   title: string;
-  brand: string | null;
+  brand: string;
   release_date: string;
+  created_at: string;
+  updated_at: string;
 };
+
+function formatDateTime(value?: string) {
+  if (!value) return "";
+  const parsed = parseISO(value);
+  if (!isValid(parsed)) return "";
+  return format(parsed, "yyyy/MM/dd HH:mm");
+}
 
 export function GameSpecListTable({ items }: { items: GameSpecListItem[] }) {
   return (
@@ -25,6 +36,8 @@ export function GameSpecListTable({ items }: { items: GameSpecListItem[] }) {
             <TableHead>タイトル</TableHead>
             <TableHead>ブランド</TableHead>
             <TableHead>リリース日</TableHead>
+            <TableHead>作成日時</TableHead>
+            <TableHead>更新日時</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -42,13 +55,15 @@ export function GameSpecListTable({ items }: { items: GameSpecListItem[] }) {
                   it.title
                 )}
               </TableCell>
-              <TableCell>{it.brand ?? ""}</TableCell>
+              <TableCell>{it.brand}</TableCell>
               <TableCell>{it.release_date}</TableCell>
+              <TableCell>{formatDateTime(it.created_at)}</TableCell>
+              <TableCell>{formatDateTime(it.updated_at)}</TableCell>
             </TableRow>
           ))}
           {items.length === 0 && (
             <TableRow>
-              <TableCell className="py-6 text-muted-foreground" colSpan={3}>
+              <TableCell className="py-6 text-muted-foreground" colSpan={5}>
                 0件
               </TableCell>
             </TableRow>

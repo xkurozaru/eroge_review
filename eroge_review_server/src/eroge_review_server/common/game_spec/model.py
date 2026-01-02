@@ -1,8 +1,8 @@
-import uuid
 from datetime import date
 
-from sqlalchemy import CHAR
-from sqlmodel import Field, SQLModel
+from sqlmodel import SQLModel
+
+from eroge_review_server.common.utils.sqlmodel_mixins import IdTimestampsMixin
 
 
 class GameSpecBase(SQLModel):
@@ -11,15 +11,8 @@ class GameSpecBase(SQLModel):
     release_date: date
 
 
-class GameSpec(GameSpecBase, table=True):
+class GameSpec(GameSpecBase, IdTimestampsMixin, table=True):
     __tablename__ = "game_spec"
-
-    id: str = Field(
-        default_factory=lambda: uuid.uuid7().hex,
-        primary_key=True,
-        nullable=False,
-        sa_type=CHAR(32),
-    )
 
 
 class GameSpecCreate(GameSpecBase):
