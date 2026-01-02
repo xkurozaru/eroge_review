@@ -20,10 +20,21 @@ if [[ -z "${ATLAS_DATABASE_URL:-}" ]]; then
   : "${DB_NAME:?DB_NAME is required (or set ATLAS_DATABASE_URL)}"
 
   # NOTE: If DB_PASSWORD contains special characters, URL-encode it or set ATLAS_DATABASE_URL directly.
-  atlas_query=""
-  if [[ -n "${DB_SSLMODE:-}" ]]; then
-    atlas_query="?sslmode=${DB_SSLMODE}"
+  # Atlas uses lib/pq; if sslmode is not specified, lib/pq defaults to sslmode=require.
+  # That fails against servers without SSL support with:
+  #   "pq: SSL is not enabled on the server"
+  # Provide a safe default:
+  # - localhost/127.0.0.1: disable (typical CI service container)
+  # - otherwise: prefer (try TLS, fall back to plain if server doesn't support)
+  sslmode="${DB_SSLMODE:-}"
+  if [[ -z "$sslmode" ]]; then
+    if [[ "${DB_HOST}" == "localhost" || "${DB_HOST}" == "127.0.0.1" ]]; then
+      sslmode="disable"
+    else
+      sslmode="prefer"
+    fi
   fi
+  atlas_query="?sslmode=${sslmode}"
   export ATLAS_DATABASE_URL="postgresql://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}${atlas_query}"
 fi
 
