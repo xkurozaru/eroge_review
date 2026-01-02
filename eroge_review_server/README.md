@@ -10,8 +10,8 @@ cd eroge_review_server
 # 依存解決 + .venv 作成
 uv sync
 
-# Controller Server 起動
-uv run uvicorn --app-dir src eroge_review_server.controller.server:app --reload
+# Showcase Server 起動
+uv run uvicorn --app-dir src eroge_review_server.showcase.server:app --reload
 
 # Console Server 起動
 uv run uvicorn --app-dir src eroge_review_server.console.server:app --reload

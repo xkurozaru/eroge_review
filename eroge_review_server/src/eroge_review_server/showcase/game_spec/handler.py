@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends
 from sqlmodel import Session
 
 from eroge_review_server.common.game_spec.model import GameSpec
-from eroge_review_server.controller.game_spec.application import ControllerGameSpecApplication
+from eroge_review_server.showcase.game_spec.application import ControllerGameSpecApplication
 from eroge_review_server.core.db import get_session
 
 router = APIRouter(prefix="/game-specs", tags=["game_spec"])

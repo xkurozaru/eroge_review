@@ -4,8 +4,8 @@ from pathlib import Path
 
 
 def load_app(which: str):
-    if which == "controller":
-        from eroge_review_server.controller.server import app  # type: ignore
+    if which == "showcase":
+        from eroge_review_server.showcase.server import app  # type: ignore
 
         return app
     if which == "console":
@@ -17,7 +17,7 @@ def load_app(which: str):
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="Export FastAPI OpenAPI schema to a file.")
-    parser.add_argument("--app", choices=["controller", "console"], required=True)
+    parser.add_argument("--app", choices=["showcase", "console"], required=True)
     parser.add_argument("--out", type=str, required=True, help="Output path (JSON).")
     args = parser.parse_args()
 
