@@ -48,7 +48,9 @@ export function GameSpecForm({
         />
       </div>
 
-      <Button type="submit">{submitLabel}</Button>
+      <div className="flex justify-end">
+        <Button type="submit">{submitLabel}</Button>
+      </div>
     </form>
   );
 }

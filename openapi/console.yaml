@@ -199,8 +199,478 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/HTTPValidationError'
+  /game-reviews:
+    get:
+      tags:
+      - game_review
+      summary: List Game Reviews
+      operationId: list_game_reviews_game_reviews_get
+      parameters:
+      - name: title
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Title
+      - name: brand
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Brand
+      - name: status
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - $ref: '#/components/schemas/GameReviewStatus'
+          - type: 'null'
+          title: Status
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 1
+          title: Page
+      - name: page_size
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 20
+          title: Page Size
+      - name: x-console-token
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: X-Console-Token
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GameReviewListResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    post:
+      tags:
+      - game_review
+      summary: Create Game Review
+      operationId: create_game_review_game_reviews_post
+      parameters:
+      - name: x-console-token
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: X-Console-Token
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GameReviewCreate'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GameReview'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /game-reviews/{game_review_id}:
+    get:
+      tags:
+      - game_review
+      summary: Get Game Review
+      operationId: get_game_review_game_reviews__game_review_id__get
+      parameters:
+      - name: game_review_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Game Review Id
+      - name: x-console-token
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: X-Console-Token
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GameReviewGetResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    put:
+      tags:
+      - game_review
+      summary: Update Game Review
+      operationId: update_game_review_game_reviews__game_review_id__put
+      parameters:
+      - name: game_review_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Game Review Id
+      - name: x-console-token
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: X-Console-Token
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GameReviewUpdate'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GameReview'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    delete:
+      tags:
+      - game_review
+      summary: Delete Game Review
+      operationId: delete_game_review_game_reviews__game_review_id__delete
+      parameters:
+      - name: game_review_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Game Review Id
+      - name: x-console-token
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: X-Console-Token
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
+    GameReview:
+      properties:
+        id:
+          type: string
+          title: Id
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        updated_at:
+          type: string
+          format: date-time
+          title: Updated At
+        game_spec_id:
+          type: string
+          title: Game Spec Id
+        title:
+          type: string
+          title: Title
+        potential_score:
+          type: integer
+          title: Potential Score
+        rating_score:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Rating Score
+        started_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Started At
+        ended_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Ended At
+        body:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Body
+        is_published:
+          type: boolean
+          title: Is Published
+      type: object
+      required:
+      - created_at
+      - updated_at
+      - game_spec_id
+      - title
+      - potential_score
+      - rating_score
+      - started_at
+      - ended_at
+      - body
+      - is_published
+      title: GameReview
+    GameReviewCreate:
+      properties:
+        game_spec_id:
+          type: string
+          title: Game Spec Id
+        title:
+          type: string
+          title: Title
+        potential_score:
+          type: integer
+          title: Potential Score
+        rating_score:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Rating Score
+        started_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Started At
+        ended_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Ended At
+        body:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Body
+        is_published:
+          type: boolean
+          title: Is Published
+      type: object
+      required:
+      - game_spec_id
+      - title
+      - potential_score
+      - rating_score
+      - started_at
+      - ended_at
+      - body
+      - is_published
+      title: GameReviewCreate
+      description: 'Create payload.
+
+
+        NOTE: Server will force is_published=false at creation time.'
+    GameReviewGetResponse:
+      properties:
+        game_spec_id:
+          type: string
+          title: Game Spec Id
+        game_title:
+          type: string
+          title: Game Title
+        brand:
+          type: string
+          title: Brand
+        release_date:
+          type: string
+          format: date
+          title: Release Date
+        game_review:
+          $ref: '#/components/schemas/GameReview'
+      type: object
+      required:
+      - game_spec_id
+      - game_title
+      - brand
+      - release_date
+      - game_review
+      title: GameReviewGetResponse
+    GameReviewListItem:
+      properties:
+        game_spec_id:
+          type: string
+          title: Game Spec Id
+        game_title:
+          type: string
+          title: Game Title
+        brand:
+          type: string
+          title: Brand
+        release_date:
+          type: string
+          format: date
+          title: Release Date
+        game_review_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Game Review Id
+        review_title:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Review Title
+        potential_score:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Potential Score
+        rating_score:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Rating Score
+        is_published:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Is Published
+      type: object
+      required:
+      - game_spec_id
+      - game_title
+      - brand
+      - release_date
+      - game_review_id
+      - review_title
+      - potential_score
+      - rating_score
+      - is_published
+      title: GameReviewListItem
+    GameReviewListResponse:
+      properties:
+        items:
+          items:
+            $ref: '#/components/schemas/GameReviewListItem'
+          type: array
+          title: Items
+        total:
+          type: integer
+          title: Total
+        page:
+          type: integer
+          title: Page
+        page_size:
+          type: integer
+          title: Page Size
+      type: object
+      required:
+      - items
+      - total
+      - page
+      - page_size
+      title: GameReviewListResponse
+    GameReviewStatus:
+      type: string
+      enum:
+      - unreviewed
+      - published
+      - draft
+      title: GameReviewStatus
+    GameReviewUpdate:
+      properties:
+        game_spec_id:
+          type: string
+          title: Game Spec Id
+        title:
+          type: string
+          title: Title
+        potential_score:
+          type: integer
+          title: Potential Score
+        rating_score:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Rating Score
+        started_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Started At
+        ended_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Ended At
+        body:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Body
+        is_published:
+          type: boolean
+          title: Is Published
+      type: object
+      required:
+      - game_spec_id
+      - title
+      - potential_score
+      - rating_score
+      - started_at
+      - ended_at
+      - body
+      - is_published
+      title: GameReviewUpdate
+      description: Full update payload.
     GameSpec:
       properties:
         id:
