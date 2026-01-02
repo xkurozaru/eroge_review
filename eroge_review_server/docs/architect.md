@@ -8,11 +8,12 @@
 
 ## 設計思想
 
-DDD + Clean Architecture + Feature directory
+DDD + Clean Architecture + CQRS + Feature directory
 
 - common
   - game_spec
-    - service.py（Enterprise Business Rule）
+    - query_service.py（Enterprise Business Rule）
+    - command_service.py（Enterprise Business Rule）
     - model.py（Domain Model）
     - mapper.py（Data Access）
   - review

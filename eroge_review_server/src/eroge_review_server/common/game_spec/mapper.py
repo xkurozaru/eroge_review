@@ -1,9 +1,6 @@
 from sqlmodel import Session, select
 
-from eroge_review_server.src.eroge_review_server.common.game_spec.model import (
-    GameSpec,
-    GameSpecCreate,
-)
+from eroge_review_server.common.game_spec.model import GameSpec, GameSpecCreate
 
 
 class GameSpecRepository:
