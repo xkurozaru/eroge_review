@@ -39,4 +39,11 @@ fi
 atlas schema apply \
   -u "$ATLAS_DATABASE_URL" \
   --to "file://db/schema.sql" \
-  --dev-url "$ATLAS_DEV_URL"
+  --dev-url "$ATLAS_DEV_URL" \
+  $(
+    # In CI (no TTY), Atlas prompts for approval and the job fails.
+    # Use ATLAS_AUTO_APPROVE=1 to force non-interactive apply locally too.
+    if [[ "${ATLAS_AUTO_APPROVE:-}" == "1" || ! -t 0 ]]; then
+      printf '%s' '--auto-approve'
+    fi
+  )
