@@ -68,16 +68,10 @@ FastAPI が OpenAPI を生成します（OpenAPI 3.0.2 に固定）。
 ファイルに出力する場合:
 
 ```bash
-# showcase の OpenAPI を出力（YAML）
-bash ./scripts/export_openapi.sh showcase ./openapi-showcase.yaml
-
-# console の OpenAPI を出力（YAML）
-bash ./scripts/export_openapi.sh console ./openapi-console.yaml
-
 # リポジトリ直下にまとめたい場合（web から参照する想定）
-# cd ..
-# bash eroge_review_server/scripts/export_openapi.sh showcase ./openapi/showcase.yaml
-# bash eroge_review_server/scripts/export_openapi.sh console ./openapi/console.yaml
+cd ..
+bash eroge_review_server/scripts/export_openapi.sh showcase ./openapi/showcase.yaml
+bash eroge_review_server/scripts/export_openapi.sh console ./openapi/console.yaml
 ```
 
 ## 環境変数

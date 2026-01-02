@@ -3,12 +3,12 @@ info:
   title: Eroge Review Console Server
   version: 0.1.0
 paths:
-  /game-specs/:
+  /game-specs:
     get:
       tags:
       - game_spec
       summary: List Game Specs
-      operationId: list_game_specs_game_specs__get
+      operationId: list_game_specs_game_specs_get
       responses:
         '200':
           description: Successful Response
@@ -18,12 +18,12 @@ paths:
                 items:
                   $ref: '#/components/schemas/GameSpec'
                 type: array
-                title: Response List Game Specs Game Specs  Get
+                title: Response List Game Specs Game Specs Get
     post:
       tags:
       - game_spec
       summary: Create Game Spec
-      operationId: create_game_spec_game_specs__post
+      operationId: create_game_spec_game_specs_post
       requestBody:
         content:
           application/json:
