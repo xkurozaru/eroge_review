@@ -54,7 +54,7 @@ jobs:
           DB_SSLMODE: ${{ secrets.DB_SSLMODE }}
 
           # Dev DB for schema.sql evaluation (ephemeral)
-          ATLAS_DEV_URL: postgresql://postgres:postgres@localhost:5432/atlas_dev?search_path=public
+          ATLAS_DEV_URL: postgresql://postgres:postgres@localhost:5432/atlas_dev?sslmode=disable&search_path=public
         run: |
           ./scripts/atlas_dry_run.sh
 
@@ -102,6 +102,6 @@ jobs:
           DB_NAME: ${{ secrets.DB_NAME }}
           DB_SSLMODE: ${{ secrets.DB_SSLMODE }}
 
-          ATLAS_DEV_URL: postgresql://postgres:postgres@localhost:5432/atlas_dev?search_path=public
+          ATLAS_DEV_URL: postgresql://postgres:postgres@localhost:5432/atlas_dev?sslmode=disable&search_path=public
         run: |
           ./scripts/atlas_apply.sh
