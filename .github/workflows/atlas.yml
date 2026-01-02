@@ -1,0 +1,107 @@
+name: atlas
+
+on:
+  pull_request:
+    paths:
+      - "eroge_review_server/db/schema.sql"
+  workflow_dispatch:
+
+concurrency:
+  group: atlas-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  dry-run:
+    name: schema apply (dry-run)
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: atlas_dev
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres -d atlas_dev"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 20
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Atlas CLI
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl -sSf https://atlasgo.sh | sh
+          atlas version
+
+      - name: Dry-run against target database
+        shell: bash
+        working-directory: eroge_review_server
+        env:
+          # Target DB (set these as GitHub Secrets or Environment Secrets)
+          DB_USER: ${{ secrets.DB_USER }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          DB_HOST: ${{ secrets.DB_HOST }}
+          DB_PORT: ${{ secrets.DB_PORT }}
+          DB_NAME: ${{ secrets.DB_NAME }}
+          DB_SSLMODE: ${{ secrets.DB_SSLMODE }}
+
+          # Dev DB for schema.sql evaluation (ephemeral)
+          ATLAS_DEV_URL: postgresql://postgres:postgres@localhost:5432/atlas_dev?search_path=public
+        run: |
+          ./scripts/atlas_dry_run.sh
+
+  apply:
+    name: schema apply
+    runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_dispatch'
+
+    # Use GitHub Environments to require manual approvals for production.
+    # environment: production
+
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: atlas_dev
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres -d atlas_dev"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 20
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Atlas CLI
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl -sSf https://atlasgo.sh | sh
+          atlas version
+
+      - name: Apply schema to target database
+        shell: bash
+        working-directory: eroge_review_server
+        env:
+          DB_USER: ${{ secrets.DB_USER }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          DB_HOST: ${{ secrets.DB_HOST }}
+          DB_PORT: ${{ secrets.DB_PORT }}
+          DB_NAME: ${{ secrets.DB_NAME }}
+          DB_SSLMODE: ${{ secrets.DB_SSLMODE }}
+
+          ATLAS_DEV_URL: postgresql://postgres:postgres@localhost:5432/atlas_dev?search_path=public
+        run: |
+          ./scripts/atlas_apply.sh
