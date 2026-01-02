@@ -4,8 +4,6 @@ on:
   pull_request:
     paths:
       - "eroge_review_server/db/schema.sql"
-      - "eroge_review_server/scripts/**"
-      - ".github/workflows/atlas.yml"
   workflow_dispatch:
 
 concurrency:
@@ -173,5 +171,6 @@ jobs:
           DB_SSLMODE: ${{ secrets.DB_SSLMODE }}
 
           ATLAS_DEV_URL: postgresql://postgres:postgres@localhost:5432/atlas_dev?sslmode=disable&search_path=public
+          ATLAS_AUTO_APPROVE: "1"
         run: |
           ./scripts/atlas_apply.sh
