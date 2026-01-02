@@ -1,8 +1,7 @@
-import os
-
 from fastapi import Depends, FastAPI, Header, HTTPException
 
 from eroge_review_server.console.game_spec.handler import router as game_spec_router
+from eroge_review_server.core.config import get_settings
 
 
 def create_app() -> FastAPI:
@@ -25,7 +24,7 @@ def require_console_token(x_console_token: str | None = Header(default=None)) ->
     If set, requests must provide the same value via X-Console-Token header.
     """
 
-    expected = os.getenv("CONSOLE_API_TOKEN")
+    expected = get_settings().console_api_token
     if not expected:
         return
     if x_console_token != expected:
