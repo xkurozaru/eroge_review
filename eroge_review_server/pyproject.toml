@@ -1,0 +1,16 @@
+[project]
+name = "eroge-review-server"
+version = "0.1.0"
+description = "Eroge Review Server"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+  "fastapi",
+  "uvicorn[standard]",
+  "sqlmodel",
+  "pydantic-settings",
+  "psycopg[binary]",
+]
+
+[tool.ruff]
+line-length = 120
