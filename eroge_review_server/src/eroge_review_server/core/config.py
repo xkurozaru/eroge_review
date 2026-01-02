@@ -19,6 +19,8 @@ class Settings(BaseSettings):
     def sqlalchemy_database_url(self) -> str:
         return f"postgresql+psycopg://{self.db_user}:{self.db_password}@{self.db_host}:{self.db_port}/{self.db_name}"
 
+    console_api_token: str | None = None
+
 
 @lru_cache(maxsize=1)
 def get_settings() -> Settings:

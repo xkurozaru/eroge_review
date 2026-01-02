@@ -15,11 +15,15 @@ Feature directory
   - app
   - components
     - ui
-      - shadcn components
-      - original common components
+      - shadcn/ui（Button/Input/Card/Table などのプリミティブ）
     - feature
       - game_spec
       - game_review
       - etc...
+  - lib
+    - api
+      - index.ts（openapi-typescript の生成ファイル）
+      - hogeApi.ts（API ラップ）
+    - utils.ts（shadcn の cn など）
   - etc...
 - eroge_review_console

@@ -47,15 +47,48 @@ jobs:
           bash eroge_review_server/scripts/export_openapi.sh showcase openapi/showcase.yaml
           bash eroge_review_server/scripts/export_openapi.sh console openapi/console.yaml
 
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: "npm"
+          cache-dependency-path: |
+            eroge_review_web/eroge_review_console/package-lock.json
+            eroge_review_web/eroge_review_showcase/package-lock.json
+
+      - name: Regenerate API types (console)
+        working-directory: eroge_review_web/eroge_review_console
+        shell: bash
+        run: |
+          set -euo pipefail
+          npm ci
+          npm run gen:api
+
+      - name: Regenerate API types (showcase)
+        working-directory: eroge_review_web/eroge_review_showcase
+        shell: bash
+        run: |
+          set -euo pipefail
+          npm ci
+          npm run gen:api
+
       - name: Check diff
         shell: bash
         run: |
           set -euo pipefail
-          if ! git diff --exit-code -- openapi/; then
-            echo "OpenAPI is out of date. Please regenerate and commit the results:"
+          if ! git diff --exit-code -- \
+            openapi/ \
+            eroge_review_web/eroge_review_console/lib/api/index.ts \
+            eroge_review_web/eroge_review_showcase/lib/api/index.ts; then
+            echo "Generated files are out of date. Please regenerate and commit the results:"
             echo "  bash eroge_review_server/scripts/export_openapi.sh showcase openapi/showcase.yaml"
             echo "  bash eroge_review_server/scripts/export_openapi.sh console openapi/console.yaml"
+            echo "  (cd eroge_review_web/eroge_review_console && npm ci && npm run gen:api)"
+            echo "  (cd eroge_review_web/eroge_review_showcase && npm ci && npm run gen:api)"
             echo ""
-            git --no-pager diff -- openapi/ || true
+            git --no-pager diff -- \
+              openapi/ \
+              eroge_review_web/eroge_review_console/lib/api/index.ts \
+              eroge_review_web/eroge_review_showcase/lib/api/index.ts || true
             exit 1
           fi

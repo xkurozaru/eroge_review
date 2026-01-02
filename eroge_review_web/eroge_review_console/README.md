@@ -2,6 +2,16 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Getting Started
 
+## 必須環境変数
+
+このプロジェクトは環境変数が未設定だと起動時にエラーになります（デフォルト値は使いません）。ローカルでは `.env.local` に以下を設定してください。
+
+- `CONSOLE_SERVER_BASE_URL`（例: `http://localhost:8000`）
+- `CONSOLE_API_TOKEN`（console API の `X-Console-Token`）
+- `CONSOLE_AUTH_SECRET`（ログイン Cookie 署名用シークレット）
+- `CONSOLE_ADMIN_ID`（ログイン ID）
+- `CONSOLE_ADMIN_PASSWORD`（ログイン PW）
+
 First, run the development server:
 
 ```bash
