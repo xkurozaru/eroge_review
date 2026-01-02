@@ -4,7 +4,7 @@ from eroge_review_server.showcase.game_spec.handler import router as game_spec_r
 
 
 def create_app() -> FastAPI:
-    app = FastAPI(title="Eroge Review Controller Server")
+    app = FastAPI(title="Eroge Review Showcase Server")
     # FastAPI defaults to OpenAPI 3.1.0; pin to 3.0.x for tooling compatibility.
     app.openapi_version = "3.0.2"
 

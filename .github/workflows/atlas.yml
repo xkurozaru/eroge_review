@@ -4,6 +4,7 @@ on:
   pull_request:
     paths:
       - "eroge_review_server/db/schema.sql"
+      - ".github/workflows/atlas.yml"
   workflow_dispatch:
 
 concurrency:

@@ -1,0 +1,108 @@
+openapi: 3.0.2
+info:
+  title: Eroge Review Console Server
+  version: 0.1.0
+paths:
+  /game-specs:
+    get:
+      tags:
+      - game_spec
+      summary: List Game Specs
+      operationId: list_game_specs_game_specs_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/GameSpec'
+                type: array
+                title: Response List Game Specs Game Specs Get
+    post:
+      tags:
+      - game_spec
+      summary: Create Game Spec
+      operationId: create_game_spec_game_specs_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GameSpecCreate'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GameSpec'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    GameSpec:
+      properties:
+        title:
+          type: string
+          title: Title
+        brand:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Brand
+        id:
+          type: string
+          title: Id
+      type: object
+      required:
+      - title
+      title: GameSpec
+    GameSpecCreate:
+      properties:
+        title:
+          type: string
+          title: Title
+        brand:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Brand
+      type: object
+      required:
+      - title
+      title: GameSpecCreate
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
