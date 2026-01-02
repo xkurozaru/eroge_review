@@ -8,7 +8,7 @@ from eroge_review_server.showcase.game_spec.application import ShowcaseGameSpecA
 router = APIRouter(prefix="/game-specs", tags=["game_spec"])
 
 
-@router.get("/")
+@router.get("")
 def list_game_specs(session: Session = Depends(get_session)) -> list[GameSpec]:
     app = ShowcaseGameSpecApplication(session)
     return app.list_game_specs()
