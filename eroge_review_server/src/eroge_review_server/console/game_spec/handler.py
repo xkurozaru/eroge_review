@@ -8,6 +8,12 @@ from eroge_review_server.core.db import get_session
 router = APIRouter(prefix="/game-specs", tags=["game_spec"])
 
 
+@router.get("/")
+def list_game_specs(session: Session = Depends(get_session)) -> list[GameSpec]:
+    app = ConsoleGameSpecApplication(session)
+    return app.list_game_specs()
+
+
 @router.post("/")
 def create_game_spec(
     payload: GameSpecCreate,
