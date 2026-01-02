@@ -1,5 +1,6 @@
 from fastapi import Depends, FastAPI, Header, HTTPException
 
+from eroge_review_server.console.game_review.handler import router as game_review_router
 from eroge_review_server.console.game_spec.handler import router as game_spec_router
 from eroge_review_server.core.config import get_settings
 
@@ -14,6 +15,7 @@ def create_app() -> FastAPI:
     # FastAPI defaults to OpenAPI 3.1.0; pin to 3.0.x for tooling compatibility.
     app.openapi_version = "3.0.2"
     app.include_router(game_spec_router)
+    app.include_router(game_review_router)
     return app
 
 

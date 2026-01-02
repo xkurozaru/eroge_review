@@ -9,3 +9,17 @@ CREATE TABLE IF NOT EXISTS game_spec (
     created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
+
+CREATE TABLE IF NOT EXISTS game_review (
+    id CHAR(32) PRIMARY KEY,
+    game_spec_id CHAR(32) NOT NULL UNIQUE REFERENCES game_spec(id) ON DELETE CASCADE,
+    title TEXT NOT NULL,
+    potential_score INTEGER NOT NULL,
+    rating_score INTEGER,
+    started_at TIMESTAMPTZ,
+    ended_at TIMESTAMPTZ,
+    body TEXT,
+    is_published BOOLEAN NOT NULL,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
