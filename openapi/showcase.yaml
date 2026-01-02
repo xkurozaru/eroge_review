@@ -31,10 +31,15 @@ components:
           - type: string
           - type: 'null'
           title: Brand
+        release_date:
+          type: string
+          format: date
+          title: Release Date
         id:
           type: string
           title: Id
       type: object
       required:
       - title
+      - release_date
       title: GameSpec

@@ -9,27 +9,78 @@ paths:
       - game_spec
       summary: List Game Specs
       operationId: list_game_specs_game_specs_get
+      parameters:
+      - name: title
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Title
+      - name: brand
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Brand
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 1
+          title: Page
+      - name: page_size
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 20
+          title: Page Size
+      - name: x-console-token
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: X-Console-Token
       responses:
         '200':
           description: Successful Response
           content:
             application/json:
               schema:
-                items:
-                  $ref: '#/components/schemas/GameSpec'
-                type: array
-                title: Response List Game Specs Game Specs Get
+                $ref: '#/components/schemas/GameSpecListResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
     post:
       tags:
       - game_spec
       summary: Create Game Spec
       operationId: create_game_spec_game_specs_post
+      parameters:
+      - name: x-console-token
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: X-Console-Token
       requestBody:
+        required: true
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/GameSpecCreate'
-        required: true
       responses:
         '200':
           description: Successful Response
@@ -37,6 +88,111 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GameSpec'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /game-specs/{game_spec_id}:
+    get:
+      tags:
+      - game_spec
+      summary: Get Game Spec
+      operationId: get_game_spec_game_specs__game_spec_id__get
+      parameters:
+      - name: game_spec_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Game Spec Id
+      - name: x-console-token
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: X-Console-Token
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GameSpec'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    put:
+      tags:
+      - game_spec
+      summary: Update Game Spec
+      operationId: update_game_spec_game_specs__game_spec_id__put
+      parameters:
+      - name: game_spec_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Game Spec Id
+      - name: x-console-token
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: X-Console-Token
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GameSpecUpdate'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GameSpec'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    delete:
+      tags:
+      - game_spec
+      summary: Delete Game Spec
+      operationId: delete_game_spec_game_specs__game_spec_id__delete
+      parameters:
+      - name: game_spec_id
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Game Spec Id
+      - name: x-console-token
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: X-Console-Token
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
         '422':
           description: Validation Error
           content:
@@ -55,12 +211,17 @@ components:
           - type: string
           - type: 'null'
           title: Brand
+        release_date:
+          type: string
+          format: date
+          title: Release Date
         id:
           type: string
           title: Id
       type: object
       required:
       - title
+      - release_date
       title: GameSpec
     GameSpecCreate:
       properties:
@@ -72,10 +233,57 @@ components:
           - type: string
           - type: 'null'
           title: Brand
+        release_date:
+          type: string
+          format: date
+          title: Release Date
       type: object
       required:
       - title
+      - release_date
       title: GameSpecCreate
+    GameSpecListResponse:
+      properties:
+        items:
+          items:
+            $ref: '#/components/schemas/GameSpec'
+          type: array
+          title: Items
+        total:
+          type: integer
+          title: Total
+        page:
+          type: integer
+          title: Page
+        page_size:
+          type: integer
+          title: Page Size
+      type: object
+      required:
+      - items
+      - total
+      - page
+      - page_size
+      title: GameSpecListResponse
+    GameSpecUpdate:
+      properties:
+        title:
+          type: string
+          title: Title
+        brand:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Brand
+        release_date:
+          type: string
+          format: date
+          title: Release Date
+      type: object
+      required:
+      - title
+      - release_date
+      title: GameSpecUpdate
     HTTPValidationError:
       properties:
         detail:
