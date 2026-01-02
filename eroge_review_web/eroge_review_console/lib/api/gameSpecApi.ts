@@ -71,7 +71,7 @@ export async function getGameSpec(id: string): Promise<GameSpec> {
 
 export async function createGameSpec(payload: {
   title: string;
-  brand: string | null;
+  brand: string;
   release_date: string;
 }): Promise<GameSpec> {
   const body: GameSpecCreate = payload;
@@ -87,7 +87,7 @@ export async function updateGameSpec(
   id: string,
   payload: {
     title: string;
-    brand: string | null;
+    brand: string;
     release_date: string;
   }
 ): Promise<GameSpec> {

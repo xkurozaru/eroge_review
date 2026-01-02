@@ -2,44 +2,4 @@ openapi: 3.0.2
 info:
   title: Eroge Review Showcase Server
   version: 0.1.0
-paths:
-  /game-specs:
-    get:
-      tags:
-      - game_spec
-      summary: List Game Specs
-      operationId: list_game_specs_game_specs_get
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema:
-                items:
-                  $ref: '#/components/schemas/GameSpec'
-                type: array
-                title: Response List Game Specs Game Specs Get
-components:
-  schemas:
-    GameSpec:
-      properties:
-        title:
-          type: string
-          title: Title
-        brand:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Brand
-        release_date:
-          type: string
-          format: date
-          title: Release Date
-        id:
-          type: string
-          title: Id
-      type: object
-      required:
-      - title
-      - release_date
-      title: GameSpec
+paths: {}

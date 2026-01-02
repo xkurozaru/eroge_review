@@ -207,9 +207,7 @@ components:
           type: string
           title: Title
         brand:
-          anyOf:
-          - type: string
-          - type: 'null'
+          type: string
           title: Brand
         release_date:
           type: string
@@ -221,6 +219,7 @@ components:
       type: object
       required:
       - title
+      - brand
       - release_date
       title: GameSpec
     GameSpecCreate:
@@ -229,9 +228,7 @@ components:
           type: string
           title: Title
         brand:
-          anyOf:
-          - type: string
-          - type: 'null'
+          type: string
           title: Brand
         release_date:
           type: string
@@ -240,6 +237,7 @@ components:
       type: object
       required:
       - title
+      - brand
       - release_date
       title: GameSpecCreate
     GameSpecListResponse:
@@ -271,9 +269,7 @@ components:
           type: string
           title: Title
         brand:
-          anyOf:
-          - type: string
-          - type: 'null'
+          type: string
           title: Brand
         release_date:
           type: string
@@ -282,6 +278,7 @@ components:
       type: object
       required:
       - title
+      - brand
       - release_date
       title: GameSpecUpdate
     HTTPValidationError:

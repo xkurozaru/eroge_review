@@ -50,7 +50,7 @@ export interface components {
             /** Title */
             title: string;
             /** Brand */
-            brand?: string | null;
+            brand: string;
             /**
              * Release Date
              * Format: date
@@ -64,7 +64,7 @@ export interface components {
             /** Title */
             title: string;
             /** Brand */
-            brand?: string | null;
+            brand: string;
             /**
              * Release Date
              * Format: date
@@ -87,7 +87,7 @@ export interface components {
             /** Title */
             title: string;
             /** Brand */
-            brand?: string | null;
+            brand: string;
             /**
              * Release Date
              * Format: date
