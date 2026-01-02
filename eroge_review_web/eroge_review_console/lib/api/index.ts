@@ -47,6 +47,18 @@ export interface components {
     schemas: {
         /** GameSpec */
         GameSpec: {
+            /** Id */
+            id?: string;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            /**
+             * Updated At
+             * Format: date-time
+             */
+            updated_at: string;
             /** Title */
             title: string;
             /** Brand */
@@ -56,8 +68,6 @@ export interface components {
              * Format: date
              */
             release_date: string;
-            /** Id */
-            id?: string;
         };
         /** GameSpecCreate */
         GameSpecCreate: {
