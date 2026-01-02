@@ -62,6 +62,7 @@ export function DatePicker({
           mode="single"
           selected={selected}
           onSelect={setSelected}
+          defaultMonth={selected}
           captionLayout="dropdown"
           fromYear={fromYear}
           toYear={toYear}
