@@ -4,11 +4,18 @@ on:
   pull_request:
     paths:
       - "eroge_review_server/db/schema.sql"
+      - "eroge_review_server/scripts/**"
+      - ".github/workflows/atlas.yml"
   workflow_dispatch:
 
 concurrency:
   group: atlas-${{ github.ref }}
   cancel-in-progress: false
+
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
 
 jobs:
   dry-run:
@@ -42,6 +49,7 @@ jobs:
           atlas version
 
       - name: Dry-run against target database
+        id: atlas_dry_run
         shell: bash
         working-directory: eroge_review_server
         env:
@@ -56,7 +64,69 @@ jobs:
           # Dev DB for schema.sql evaluation (ephemeral)
           ATLAS_DEV_URL: postgresql://postgres:postgres@localhost:5432/atlas_dev?sslmode=disable&search_path=public
         run: |
-          ./scripts/atlas_dry_run.sh
+          set +e
+          ./scripts/atlas_dry_run.sh 2>&1 | tee atlas_dry_run.txt
+          exit_code=${PIPESTATUS[0]}
+          echo "exit_code=${exit_code}" >> "$GITHUB_OUTPUT"
+          exit 0
+
+      - name: Comment dry-run result
+        if: always()
+        uses: actions/github-script@v7
+        env:
+          ATLAS_DRY_RUN_EXIT_CODE: ${{ steps.atlas_dry_run.outputs.exit_code }}
+        with:
+          script: |
+            const fs = require('fs');
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const issue_number = context.payload.pull_request.number;
+            const marker = '<!-- atlas-dry-run -->';
+
+            const exitCode = process.env.ATLAS_DRY_RUN_EXIT_CODE || 'unknown';
+            const status = exitCode === '0' ? '✅ success' : `❌ failed (exit ${exitCode})`;
+
+            const outputPath = 'eroge_review_server/atlas_dry_run.txt';
+            let output = '';
+            try {
+              output = fs.readFileSync(outputPath, 'utf8');
+            } catch (e) {
+              output = `Failed to read ${outputPath}: ${e}`;
+            }
+            const maxLen = 60000;
+            if (output.length > maxLen) {
+              output = output.slice(0, maxLen) + '\n\n...(truncated)...';
+            }
+
+            const body = [
+              marker,
+              `## Atlas schema apply (dry-run)`,
+              `- Status: ${status}`,
+              `- Workflow: ${context.workflow} / ${context.job}`,
+              `- Run: ${process.env.GITHUB_SERVER_URL}/${process.env.GITHUB_REPOSITORY}/actions/runs/${process.env.GITHUB_RUN_ID}`,
+              '',
+              '```',
+              output,
+              '```',
+            ].join('\n');
+
+            const comments = await github.paginate(github.rest.issues.listComments, {
+              owner,
+              repo,
+              issue_number,
+              per_page: 100,
+            });
+            const managed = comments.filter(c => (c.body || '').includes(marker));
+
+            if (managed.length === 0) {
+              await github.rest.issues.createComment({ owner, repo, issue_number, body });
+            } else {
+              const [keep, ...remove] = managed;
+              await github.rest.issues.updateComment({ owner, repo, comment_id: keep.id, body });
+              for (const c of remove) {
+                await github.rest.issues.deleteComment({ owner, repo, comment_id: c.id });
+              }
+            }
 
   apply:
     name: schema apply
