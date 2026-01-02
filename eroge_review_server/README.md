@@ -62,17 +62,22 @@ atlas schema apply -u "$ATLAS_DATABASE_URL" --to "file://db/schema.sql" --dev-ur
 
 FastAPI が OpenAPI を生成します（OpenAPI 3.0.2 に固定）。
 
-- Controller Server: `GET /openapi.json`（Swagger UI は `GET /docs`）
+- Showcase Server: `GET /openapi.json`（Swagger UI は `GET /docs`）
 - Console Server: `GET /openapi.json`（Swagger UI は `GET /docs`）
 
 ファイルに出力する場合:
 
 ```bash
-# controller の OpenAPI を出力
-bash ./scripts/export_openapi.sh controller ./openapi-controller.json
+# showcase の OpenAPI を出力（YAML）
+bash ./scripts/export_openapi.sh showcase ./openapi-showcase.yaml
 
-# console の OpenAPI を出力
-bash ./scripts/export_openapi.sh console ./openapi-console.json
+# console の OpenAPI を出力（YAML）
+bash ./scripts/export_openapi.sh console ./openapi-console.yaml
+
+# リポジトリ直下にまとめたい場合（web から参照する想定）
+# cd ..
+# bash eroge_review_server/scripts/export_openapi.sh showcase ./openapi/showcase.yaml
+# bash eroge_review_server/scripts/export_openapi.sh console ./openapi/console.yaml
 ```
 
 ## 環境変数

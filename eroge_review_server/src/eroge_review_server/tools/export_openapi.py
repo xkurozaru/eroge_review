@@ -1,6 +1,9 @@
 import argparse
 import json
 from pathlib import Path
+from typing import Any
+
+import yaml
 
 
 def load_app(which: str):
@@ -15,10 +18,24 @@ def load_app(which: str):
     raise ValueError(f"Unknown app: {which}")
 
 
+def _dump_json(data: Any) -> str:
+    return json.dumps(data, ensure_ascii=False, indent=2) + "\n"
+
+
+def _dump_yaml(data: Any) -> str:
+    return yaml.safe_dump(
+        data,
+        allow_unicode=True,
+        sort_keys=False,
+        width=120,
+    )
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Export FastAPI OpenAPI schema to a file.")
     parser.add_argument("--app", choices=["showcase", "console"], required=True)
-    parser.add_argument("--out", type=str, required=True, help="Output path (JSON).")
+    parser.add_argument("--out", type=str, required=True, help="Output file path (.json/.yaml).")
+    parser.add_argument("--format", choices=["json", "yaml"], default=None)
     args = parser.parse_args()
 
     app = load_app(args.app)
@@ -26,7 +43,16 @@ def main() -> int:
 
     out_path = Path(args.out)
     out_path.parent.mkdir(parents=True, exist_ok=True)
-    out_path.write_text(json.dumps(schema, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+    fmt = args.format
+    if fmt is None:
+        fmt = "yaml" if out_path.suffix.lower() in {".yml", ".yaml"} else "json"
+
+    if fmt == "yaml":
+        out_path.write_text(_dump_yaml(schema), encoding="utf-8")
+        return 0
+
+    out_path.write_text(_dump_json(schema), encoding="utf-8")
     return 0
 
 

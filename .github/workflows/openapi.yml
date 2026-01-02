@@ -1,0 +1,61 @@
+name: openapi
+
+on:
+  pull_request:
+    paths:
+      - "openapi/**"
+      - "eroge_review_server/**"
+      - ".github/workflows/openapi.yml"
+
+concurrency:
+  group: openapi-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    name: verify openapi is up-to-date
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v3
+        with:
+          version: "latest"
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        working-directory: eroge_review_server
+        shell: bash
+        run: |
+          set -euo pipefail
+          uv sync --frozen
+
+      - name: Regenerate OpenAPI
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p openapi
+          bash eroge_review_server/scripts/export_openapi.sh showcase openapi/showcase.yaml
+          bash eroge_review_server/scripts/export_openapi.sh console openapi/console.yaml
+
+      - name: Check diff
+        shell: bash
+        run: |
+          set -euo pipefail
+          if ! git diff --exit-code -- openapi/; then
+            echo "OpenAPI is out of date. Please regenerate and commit the results:"
+            echo "  bash eroge_review_server/scripts/export_openapi.sh showcase openapi/showcase.yaml"
+            echo "  bash eroge_review_server/scripts/export_openapi.sh console openapi/console.yaml"
+            echo ""
+            git --no-pager diff -- openapi/ || true
+            exit 1
+          fi
