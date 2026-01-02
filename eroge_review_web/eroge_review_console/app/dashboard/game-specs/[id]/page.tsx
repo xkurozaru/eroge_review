@@ -29,7 +29,7 @@ export default async function GameSpecDetailPage(
       brand,
       release_date: releaseDate,
     });
-    redirect(`/dashboard/game-specs/${params.id}`);
+    redirect("/dashboard/game-specs");
   }
 
   async function deleteAction() {
