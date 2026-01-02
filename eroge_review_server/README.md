@@ -38,6 +38,10 @@ cp env.sample .env
 ./scripts/atlas_apply.sh
 ```
 
+注意:
+
+- `DB_SSLMODE` は必須です（例: `disable` / `require`）。CI では Secrets から渡す想定です。
+
 （手動でやる場合）
 
 ```bash
