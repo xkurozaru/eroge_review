@@ -1,0 +1,54 @@
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+
+export function GameSpecForm({
+  action,
+  submitLabel,
+  defaultValues,
+}: {
+  action: (formData: FormData) => void;
+  submitLabel: string;
+  defaultValues?: {
+    title?: string;
+    brand?: string;
+    release_date?: string;
+  };
+}) {
+  return (
+    <form
+      action={action}
+      className="space-y-5 rounded-lg border bg-background p-6"
+    >
+      <div className="space-y-2">
+        <Label>タイトル</Label>
+        <Input
+          name="title"
+          defaultValue={defaultValues?.title ?? ""}
+          required
+        />
+      </div>
+
+      <div className="space-y-2">
+        <Label>ブランド名</Label>
+        <Input
+          name="brand"
+          defaultValue={defaultValues?.brand ?? ""}
+          required
+        />
+      </div>
+
+      <div className="space-y-2">
+        <Label>リリース日</Label>
+        <Input
+          name="release_date"
+          type="date"
+          defaultValue={defaultValues?.release_date ?? ""}
+          required
+        />
+      </div>
+
+      <Button type="submit">{submitLabel}</Button>
+    </form>
+  );
+}

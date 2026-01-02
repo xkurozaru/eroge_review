@@ -1,17 +1,19 @@
 import Link from "next/link";
 
+import { GameSpecListTable } from "@/components/feature/game_spec/game-spec-list-table";
+import { GameSpecPagination } from "@/components/feature/game_spec/game-spec-pagination";
+import {
+  GameSpecSearchForm,
+  type GameSpecSearchParams,
+} from "@/components/feature/game_spec/game-spec-search-form";
+import { buttonVariants } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { listGameSpecs } from "@/lib/api/gameSpecApi";
-
-type SearchParams = {
-  title?: string;
-  brand?: string;
-  page?: string;
-};
 
 export default async function GameSpecsPage(
   props: PageProps<"/dashboard/game-specs">
 ) {
-  const searchParams = (await props.searchParams) as SearchParams;
+  const searchParams = (await props.searchParams) as GameSpecSearchParams;
   const title = (searchParams.title || "").trim();
   const brand = (searchParams.brand || "").trim();
   const page = Math.max(1, Number(searchParams.page || "1") || 1);
@@ -28,7 +30,7 @@ export default async function GameSpecsPage(
   const prevPage = page > 1 ? page - 1 : null;
   const nextPage = page < totalPages ? page + 1 : null;
 
-  const buildQuery = (next: Partial<SearchParams>) => {
+  const buildQuery = (next: Partial<GameSpecSearchParams>) => {
     const qs = new URLSearchParams();
     if (title) qs.set("title", title);
     if (brand) qs.set("brand", brand);
@@ -42,123 +44,33 @@ export default async function GameSpecsPage(
         <h1 className="text-xl font-semibold">Game Spec 管理</h1>
         <Link
           href="/dashboard/game-specs/create"
-          className="inline-flex h-10 items-center justify-center rounded-md bg-foreground px-4 text-sm font-medium text-background"
+          className={buttonVariants({ variant: "default" })}
         >
           新規作成
         </Link>
       </header>
 
-      <section className="rounded-lg border bg-background p-4">
-        <form
-          className="flex flex-col gap-3 md:flex-row md:items-end"
-          method="get"
-        >
-          <div className="flex-1 space-y-2">
-            <label className="text-sm font-medium">タイトル（部分一致）</label>
-            <input
-              name="title"
-              defaultValue={title}
-              className="h-10 w-full rounded-md border bg-background px-3 text-sm"
-            />
-          </div>
+      <Card>
+        <CardContent>
+          <GameSpecSearchForm title={title} brand={brand} />
+        </CardContent>
+      </Card>
 
-          <div className="flex-1 space-y-2">
-            <label className="text-sm font-medium">
-              ブランド名（部分一致）
-            </label>
-            <input
-              name="brand"
-              defaultValue={brand}
-              className="h-10 w-full rounded-md border bg-background px-3 text-sm"
-            />
-          </div>
+      <Card>
+        <CardHeader>
+          <CardTitle>Game Spec 一覧</CardTitle>
+        </CardHeader>
+        <GameSpecListTable items={data.items} />
+      </Card>
 
-          <button
-            type="submit"
-            className="inline-flex h-10 items-center justify-center rounded-md bg-foreground px-4 text-sm font-medium text-background"
-          >
-            検索
-          </button>
-        </form>
-      </section>
-
-      <section className="rounded-lg border bg-background">
-        <div className="border-b px-4 py-3 text-sm font-medium">
-          Game Spec 一覧
-        </div>
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead className="border-b">
-              <tr className="text-left">
-                <th className="px-4 py-2">タイトル</th>
-                <th className="px-4 py-2">ブランド</th>
-                <th className="px-4 py-2">リリース日</th>
-              </tr>
-            </thead>
-            <tbody>
-              {data.items.map((it) => (
-                <tr key={it.id} className="border-b">
-                  <td className="px-4 py-2">
-                    <Link
-                      href={`/dashboard/game-specs/${it.id}`}
-                      className="underline"
-                    >
-                      {it.title}
-                    </Link>
-                  </td>
-                  <td className="px-4 py-2">{it.brand ?? ""}</td>
-                  <td className="px-4 py-2">{it.release_date}</td>
-                </tr>
-              ))}
-              {data.items.length === 0 && (
-                <tr>
-                  <td className="px-4 py-6 text-muted-foreground" colSpan={3}>
-                    0件
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
-      </section>
-
-      <footer className="flex items-center justify-between">
-        <div className="text-sm text-muted-foreground">
-          {data.total} 件 / {page} / {totalPages}
-        </div>
-        <div className="flex gap-2">
-          <Link
-            aria-disabled={!prevPage}
-            className={`inline-flex h-9 items-center justify-center rounded-md border px-3 text-sm ${
-              prevPage ? "" : "pointer-events-none opacity-50"
-            }`}
-            href={
-              prevPage
-                ? `/dashboard/game-specs${buildQuery({
-                    page: String(prevPage),
-                  })}`
-                : "#"
-            }
-          >
-            前へ
-          </Link>
-          <Link
-            aria-disabled={!nextPage}
-            className={`inline-flex h-9 items-center justify-center rounded-md border px-3 text-sm ${
-              nextPage ? "" : "pointer-events-none opacity-50"
-            }`}
-            href={
-              nextPage
-                ? `/dashboard/game-specs${buildQuery({
-                    page: String(nextPage),
-                  })}`
-                : "#"
-            }
-          >
-            次へ
-          </Link>
-        </div>
-      </footer>
+      <GameSpecPagination
+        page={page}
+        totalPages={totalPages}
+        total={data.total}
+        prevPage={prevPage}
+        nextPage={nextPage}
+        buildQuery={buildQuery}
+      />
     </div>
   );
 }
