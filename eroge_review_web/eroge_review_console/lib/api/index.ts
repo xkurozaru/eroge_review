@@ -41,10 +41,179 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/game-reviews": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Game Reviews */
+        get: operations["list_game_reviews_game_reviews_get"];
+        put?: never;
+        /** Create Game Review */
+        post: operations["create_game_review_game_reviews_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/game-reviews/{game_review_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Game Review */
+        get: operations["get_game_review_game_reviews__game_review_id__get"];
+        /** Update Game Review */
+        put: operations["update_game_review_game_reviews__game_review_id__put"];
+        post?: never;
+        /** Delete Game Review */
+        delete: operations["delete_game_review_game_reviews__game_review_id__delete"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
+        /** GameReview */
+        GameReview: {
+            /** Id */
+            id?: string;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            /**
+             * Updated At
+             * Format: date-time
+             */
+            updated_at: string;
+            /** Game Spec Id */
+            game_spec_id: string;
+            /** Title */
+            title: string;
+            /** Potential Score */
+            potential_score: number;
+            /** Rating Score */
+            rating_score: number | null;
+            /** Started At */
+            started_at: string | null;
+            /** Ended At */
+            ended_at: string | null;
+            /** Body */
+            body: string | null;
+            /** Is Published */
+            is_published: boolean;
+        };
+        /**
+         * GameReviewCreate
+         * @description Create payload.
+         *
+         *     NOTE: Server will force is_published=false at creation time.
+         */
+        GameReviewCreate: {
+            /** Game Spec Id */
+            game_spec_id: string;
+            /** Title */
+            title: string;
+            /** Potential Score */
+            potential_score: number;
+            /** Rating Score */
+            rating_score: number | null;
+            /** Started At */
+            started_at: string | null;
+            /** Ended At */
+            ended_at: string | null;
+            /** Body */
+            body: string | null;
+            /** Is Published */
+            is_published: boolean;
+        };
+        /** GameReviewGetResponse */
+        GameReviewGetResponse: {
+            /** Game Spec Id */
+            game_spec_id: string;
+            /** Game Title */
+            game_title: string;
+            /** Brand */
+            brand: string;
+            /**
+             * Release Date
+             * Format: date
+             */
+            release_date: string;
+            game_review: components["schemas"]["GameReview"];
+        };
+        /** GameReviewListItem */
+        GameReviewListItem: {
+            /** Game Spec Id */
+            game_spec_id: string;
+            /** Game Title */
+            game_title: string;
+            /** Brand */
+            brand: string;
+            /**
+             * Release Date
+             * Format: date
+             */
+            release_date: string;
+            /** Game Review Id */
+            game_review_id: string | null;
+            /** Review Title */
+            review_title: string | null;
+            /** Potential Score */
+            potential_score: number | null;
+            /** Rating Score */
+            rating_score: number | null;
+            /** Is Published */
+            is_published: boolean | null;
+        };
+        /** GameReviewListResponse */
+        GameReviewListResponse: {
+            /** Items */
+            items: components["schemas"]["GameReviewListItem"][];
+            /** Total */
+            total: number;
+            /** Page */
+            page: number;
+            /** Page Size */
+            page_size: number;
+        };
+        /**
+         * GameReviewStatus
+         * @enum {string}
+         */
+        GameReviewStatus: "unreviewed" | "published" | "draft";
+        /**
+         * GameReviewUpdate
+         * @description Full update payload.
+         */
+        GameReviewUpdate: {
+            /** Game Spec Id */
+            game_spec_id: string;
+            /** Title */
+            title: string;
+            /** Potential Score */
+            potential_score: number;
+            /** Rating Score */
+            rating_score: number | null;
+            /** Started At */
+            started_at: string | null;
+            /** Ended At */
+            ended_at: string | null;
+            /** Body */
+            body: string | null;
+            /** Is Published */
+            is_published: boolean;
+        };
         /** GameSpec */
         GameSpec: {
             /** Id */
@@ -276,6 +445,181 @@ export interface operations {
             };
             path: {
                 game_spec_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_game_reviews_game_reviews_get: {
+        parameters: {
+            query?: {
+                title?: string | null;
+                brand?: string | null;
+                status?: components["schemas"]["GameReviewStatus"] | null;
+                page?: number;
+                page_size?: number;
+            };
+            header?: {
+                "x-console-token"?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GameReviewListResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    create_game_review_game_reviews_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "x-console-token"?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["GameReviewCreate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GameReview"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_game_review_game_reviews__game_review_id__get: {
+        parameters: {
+            query?: never;
+            header?: {
+                "x-console-token"?: string | null;
+            };
+            path: {
+                game_review_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GameReviewGetResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    update_game_review_game_reviews__game_review_id__put: {
+        parameters: {
+            query?: never;
+            header?: {
+                "x-console-token"?: string | null;
+            };
+            path: {
+                game_review_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["GameReviewUpdate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GameReview"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    delete_game_review_game_reviews__game_review_id__delete: {
+        parameters: {
+            query?: never;
+            header?: {
+                "x-console-token"?: string | null;
+            };
+            path: {
+                game_review_id: string;
             };
             cookie?: never;
         };
