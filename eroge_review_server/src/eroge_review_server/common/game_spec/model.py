@@ -12,10 +12,10 @@ class GameSpecBase(SQLModel):
 
 class GameSpec(GameSpecBase, table=True):
     id: str = Field(
-        default_factory=lambda: str(uuid.uuid7()),
+        default_factory=lambda: uuid.uuid7().hex,
         primary_key=True,
         nullable=False,
-        sa_type=CHAR(36),
+        sa_type=CHAR(32),
     )
 
 
