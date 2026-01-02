@@ -21,7 +21,7 @@ if [[ -z "${ATLAS_DATABASE_URL:-}" ]]; then
   : "${DB_SSLMODE:?DB_SSLMODE is required (e.g. disable/require)}"
 
   # NOTE: If DB_PASSWORD contains special characters, URL-encode it or set ATLAS_DATABASE_URL directly.
-  atlas_query="?sslmode=${DB_SSLMODE}"
+  atlas_query="?sslmode=${DB_SSLMODE}&search_path=public"
   export ATLAS_DATABASE_URL="postgresql://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}${atlas_query}"
 fi
 
