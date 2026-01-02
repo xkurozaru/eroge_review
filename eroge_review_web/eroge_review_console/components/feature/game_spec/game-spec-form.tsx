@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { DatePicker } from "@/components/ui/date-picker";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
@@ -40,9 +41,8 @@ export function GameSpecForm({
 
       <div className="space-y-2">
         <Label>リリース日</Label>
-        <Input
+        <DatePicker
           name="release_date"
-          type="date"
           defaultValue={defaultValues?.release_date ?? ""}
           required
         />
