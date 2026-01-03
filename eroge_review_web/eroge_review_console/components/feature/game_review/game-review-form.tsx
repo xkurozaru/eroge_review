@@ -53,6 +53,16 @@ export function GameReviewForm(props: {
   const sanitizeSchema = React.useMemo(() => {
     // Allow a limited subset of HTML for richer authoring, but sanitize it.
     // NOTE: Any rendering in showcase must also sanitize.
+    const baseAttributesUnknown: unknown = defaultSchema.attributes ?? {};
+    const baseAttributes =
+      typeof baseAttributesUnknown === "object" &&
+      baseAttributesUnknown !== null
+        ? (baseAttributesUnknown as Record<string, unknown>)
+        : {};
+    const baseAAttributes = Array.isArray(baseAttributes.a)
+      ? (baseAttributes.a as string[])
+      : [];
+
     return {
       ...defaultSchema,
       tagNames: Array.from(
@@ -69,12 +79,7 @@ export function GameReviewForm(props: {
       ),
       attributes: {
         ...(defaultSchema.attributes ?? {}),
-        a: [
-          ...(((defaultSchema.attributes ?? {}) as any).a ?? []),
-          "href",
-          "title",
-          "rel",
-        ],
+        a: [...baseAAttributes, "href", "title", "rel"],
         img: ["src", "alt", "title", "width", "height"],
         table: ["align"],
         th: ["align"],

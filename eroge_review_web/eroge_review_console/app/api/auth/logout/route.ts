@@ -4,6 +4,7 @@ import { NextResponse } from "next/server";
 import { CONSOLE_SESSION_COOKIE } from "@/lib/auth";
 
 export async function POST(_request: NextRequest) {
+  void _request;
   const res = NextResponse.json({ ok: true });
   res.cookies.set(CONSOLE_SESSION_COOKIE, "", {
     httpOnly: true,
