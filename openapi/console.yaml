@@ -454,8 +454,6 @@ components:
           title: Is Published
       type: object
       required:
-      - created_at
-      - updated_at
       - game_spec_id
       - title
       - potential_score
@@ -576,6 +574,18 @@ components:
           - type: integer
           - type: 'null'
           title: Rating Score
+        review_created_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Review Created At
+        review_updated_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Review Updated At
         is_published:
           anyOf:
           - type: boolean
@@ -591,6 +601,8 @@ components:
       - review_title
       - potential_score
       - rating_score
+      - review_created_at
+      - review_updated_at
       - is_published
       title: GameReviewListItem
     GameReviewListResponse:
@@ -696,8 +708,6 @@ components:
           title: Release Date
       type: object
       required:
-      - created_at
-      - updated_at
       - title
       - brand
       - release_date

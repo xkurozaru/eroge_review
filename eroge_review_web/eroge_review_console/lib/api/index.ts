@@ -173,6 +173,10 @@ export interface components {
             potential_score: number | null;
             /** Rating Score */
             rating_score: number | null;
+            /** Review Created At */
+            review_created_at: string | null;
+            /** Review Updated At */
+            review_updated_at: string | null;
             /** Is Published */
             is_published: boolean | null;
         };

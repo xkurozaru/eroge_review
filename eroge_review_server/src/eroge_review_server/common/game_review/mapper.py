@@ -70,6 +70,8 @@ class GameReviewRepository:
                     review_title=(game_review.title if game_review else None),
                     potential_score=(game_review.potential_score if game_review else None),
                     rating_score=(game_review.rating_score if game_review else None),
+                    review_created_at=(game_review.created_at if game_review else None),
+                    review_updated_at=(game_review.updated_at if game_review else None),
                     is_published=(game_review.is_published if game_review else None),
                 )
             )

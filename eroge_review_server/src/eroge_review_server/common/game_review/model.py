@@ -67,6 +67,8 @@ class GameReviewListItem(SQLModel):
     review_title: str | None
     potential_score: int | None
     rating_score: int | None
+    review_created_at: datetime | None
+    review_updated_at: datetime | None
     is_published: bool | None
 
 
