@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 import { CONSOLE_SESSION_COOKIE, verifySessionValueEdge } from "@/lib/authEdge";
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
   const cookie = request.cookies.get(CONSOLE_SESSION_COOKIE)?.value;
   const loggedIn = await verifySessionValueEdge(cookie);
