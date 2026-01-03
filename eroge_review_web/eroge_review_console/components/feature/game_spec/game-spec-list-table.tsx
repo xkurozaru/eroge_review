@@ -10,17 +10,9 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { GameSpec } from "@/lib/api/gameSpecApi";
 
-export type GameSpecListItem = {
-  id?: string;
-  title: string;
-  brand: string;
-  release_date: string;
-  created_at: string;
-  updated_at: string;
-};
-
-export function GameSpecListTable({ items }: { items: GameSpecListItem[] }) {
+export function GameSpecListTable({ items }: { items: GameSpec[] }) {
   return (
     <div className="overflow-x-auto">
       <Table>

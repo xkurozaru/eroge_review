@@ -31,8 +31,10 @@ function toRequiredInt(value: FormDataEntryValue | null, name: string): number {
 }
 
 function toBool(value: FormDataEntryValue | null): boolean {
-  // For checkbox: present => "on".
-  return value != null;
+  const s = String(value ?? "")
+    .trim()
+    .toLowerCase();
+  return s === "true" || s === "1" || s === "on";
 }
 
 function toDatetimeLocal(value: string | null): string | null {
@@ -113,7 +115,7 @@ export default async function GameReviewDetailPage(
           started_at: fromServerDatetime(review.started_at),
           ended_at: fromServerDatetime(review.ended_at),
           body: review.body,
-          is_published: review.is_published,
+          is_published: review.published_at != null,
         }}
       />
     </div>

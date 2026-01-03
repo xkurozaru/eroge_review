@@ -449,9 +449,12 @@ components:
           - type: string
           - type: 'null'
           title: Body
-        is_published:
-          type: boolean
-          title: Is Published
+        published_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Published At
       type: object
       required:
       - game_spec_id
@@ -461,7 +464,6 @@ components:
       - started_at
       - ended_at
       - body
-      - is_published
       title: GameReview
     GameReviewCreate:
       properties:
@@ -499,6 +501,7 @@ components:
         is_published:
           type: boolean
           title: Is Published
+          default: false
       type: object
       required:
       - game_spec_id
@@ -508,12 +511,13 @@ components:
       - started_at
       - ended_at
       - body
-      - is_published
       title: GameReviewCreate
       description: 'Create payload.
 
 
-        NOTE: Server will force is_published=false at creation time.'
+        NOTE: Clients send publish intent via is_published.
+
+        Server will set published_at accordingly.'
     GameReviewGetResponse:
       properties:
         game_spec_id:
@@ -586,11 +590,12 @@ components:
             format: date-time
           - type: 'null'
           title: Review Updated At
-        is_published:
+        published_at:
           anyOf:
-          - type: boolean
+          - type: string
+            format: date-time
           - type: 'null'
-          title: Is Published
+          title: Published At
       type: object
       required:
       - game_spec_id
@@ -603,7 +608,7 @@ components:
       - rating_score
       - review_created_at
       - review_updated_at
-      - is_published
+      - published_at
       title: GameReviewListItem
     GameReviewListResponse:
       properties:

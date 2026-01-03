@@ -16,7 +16,7 @@ function status(
   item: GameReviewListItem
 ): "unreviewed" | "draft" | "published" {
   if (!item.game_review_id) return "unreviewed";
-  if (item.is_published) return "published";
+  if (item.published_at) return "published";
   return "draft";
 }
 

@@ -142,17 +142,9 @@ export function GameReviewForm(props: {
               : "flex items-center gap-3"
           }
         >
-          <Label htmlFor="is_published">公開/非公開</Label>
-          {/* Keep native checkbox semantics for form submission. */}
-          <input
-            id="is_published"
-            name="is_published"
-            type="checkbox"
-            className="sr-only"
-            checked={isPublished}
-            readOnly
-          />
+          <Label htmlFor="is_published_toggle">公開/非公開</Label>
           <Switch
+            id="is_published_toggle"
             checked={isPublished}
             onCheckedChange={(next) => {
               if (next && !canPublish) {
@@ -174,6 +166,12 @@ export function GameReviewForm(props: {
       action={props.action}
       className="space-y-5 rounded-lg border bg-background p-6"
     >
+      <input
+        type="hidden"
+        name="is_published"
+        value={isPublished ? "true" : "false"}
+      />
+
       <div className="space-y-2">
         <Label>レビュータイトル</Label>
         <Input

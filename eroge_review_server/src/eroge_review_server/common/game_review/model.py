@@ -3,7 +3,7 @@ from __future__ import annotations
 from datetime import date, datetime
 from enum import Enum
 
-from sqlalchemy import CHAR, UniqueConstraint
+from sqlalchemy import CHAR, DateTime, UniqueConstraint
 from sqlmodel import Field, SQLModel
 
 from eroge_review_server.common.game_review.exception import GameReviewPublishValidationError
@@ -12,8 +12,8 @@ from eroge_review_server.common.utils.sqlmodel_mixins import IdTimestampsMixin
 
 class GameReviewStatus(str, Enum):
     unreviewed = "unreviewed"  # game_review does not exist
-    published = "published"  # game_review exists and is_published = true
-    draft = "draft"  # game_review exists and is_published = false
+    published = "published"  # game_review exists and published_at is not null
+    draft = "draft"  # game_review exists and published_at is null
 
 
 class GameReviewBase(SQLModel):
@@ -27,33 +27,36 @@ class GameReviewBase(SQLModel):
     ended_at: datetime | None
 
     body: str | None
-    is_published: bool
 
 
 class GameReview(GameReviewBase, IdTimestampsMixin, table=True):
     __tablename__ = "game_review"
     __table_args__ = (UniqueConstraint("game_spec_id"),)
 
+    # Server-managed publish timestamp. NULL means draft/unpublished.
+    published_at: datetime | None = Field(default=None, sa_type=DateTime(timezone=True), nullable=True)
+
 
 class GameReviewCreate(GameReviewBase):
     """Create payload.
 
-    NOTE: Server will force is_published=false at creation time.
+    NOTE: Clients send publish intent via is_published.
+    Server will set published_at accordingly.
     """
 
-
-def force_private_creation(payload: "GameReviewCreate") -> "GameReviewCreate":
-    # Domain rule: Always create as non-published.
-    return payload.model_copy(update={"is_published": False})
+    is_published: bool = False
 
 
 class GameReviewUpdate(GameReviewBase):
     """Full update payload."""
 
+    # Require the field to avoid ambiguous publish state.
+    is_published: bool
 
-def validate_publishable(payload: "GameReviewUpdate") -> None:
+
+def validate_publishable(*, is_published: bool, rating_score: int | None, body: str | None) -> None:
     # Domain rule: Publishing requires both rating_score and body.
-    if payload.is_published and (payload.rating_score is None or payload.body is None):
+    if is_published and (rating_score is None or body is None):
         raise GameReviewPublishValidationError("rating_score and body are required to publish")
 
 
@@ -69,7 +72,7 @@ class GameReviewListItem(SQLModel):
     rating_score: int | None
     review_created_at: datetime | None
     review_updated_at: datetime | None
-    is_published: bool | None
+    published_at: datetime | None
 
 
 class GameReviewListResponse(SQLModel):

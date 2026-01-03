@@ -90,12 +90,12 @@ export interface components {
              * Created At
              * Format: date-time
              */
-            created_at: string;
+            created_at?: string;
             /**
              * Updated At
              * Format: date-time
              */
-            updated_at: string;
+            updated_at?: string;
             /** Game Spec Id */
             game_spec_id: string;
             /** Title */
@@ -110,14 +110,15 @@ export interface components {
             ended_at: string | null;
             /** Body */
             body: string | null;
-            /** Is Published */
-            is_published: boolean;
+            /** Published At */
+            published_at?: string | null;
         };
         /**
          * GameReviewCreate
          * @description Create payload.
          *
-         *     NOTE: Server will force is_published=false at creation time.
+         *     NOTE: Clients send publish intent via is_published.
+         *     Server will set published_at accordingly.
          */
         GameReviewCreate: {
             /** Game Spec Id */
@@ -134,7 +135,10 @@ export interface components {
             ended_at: string | null;
             /** Body */
             body: string | null;
-            /** Is Published */
+            /**
+             * Is Published
+             * @default false
+             */
             is_published: boolean;
         };
         /** GameReviewGetResponse */
@@ -177,8 +181,8 @@ export interface components {
             review_created_at: string | null;
             /** Review Updated At */
             review_updated_at: string | null;
-            /** Is Published */
-            is_published: boolean | null;
+            /** Published At */
+            published_at: string | null;
         };
         /** GameReviewListResponse */
         GameReviewListResponse: {
@@ -226,12 +230,12 @@ export interface components {
              * Created At
              * Format: date-time
              */
-            created_at: string;
+            created_at?: string;
             /**
              * Updated At
              * Format: date-time
              */
-            updated_at: string;
+            updated_at?: string;
             /** Title */
             title: string;
             /** Brand */
