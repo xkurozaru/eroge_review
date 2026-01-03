@@ -17,6 +17,32 @@ uv run uvicorn --app-dir src eroge_review_server.showcase.server:app --reload
 uv run uvicorn --app-dir src eroge_review_server.console.server:app --reload
 ```
 
+## デプロイ（Vercel）
+
+このリポジトリは FastAPI を Vercel の Python Functions で動かすために、`src/app.py` をエントリにしています。
+Vercel 側では「console」「showcase」を別 Project として作り、環境変数でどちらのアプリを起動するかを切り替えます。
+
+### Vercel Project 設定（console / showcase 共通）
+
+- Root Directory: `eroge_review_server`
+- Framework Preset: Other
+
+### 環境変数
+
+共通（必須）:
+
+- `APP_ENV`
+- `DB_USER`
+- `DB_PASSWORD`
+- `DB_HOST`
+- `DB_PORT`
+- `DB_NAME`
+
+起動するアプリ切り替え:
+
+- `EROGE_REVIEW_APP=showcase`（Showcase 用 Project）
+- `EROGE_REVIEW_APP=console`（Console 用 Project）
+
 ## DB Migration（Atlas）
 
 Atlas で [db/schema.sql](db/schema.sql) を適用してスキーマ管理します。
