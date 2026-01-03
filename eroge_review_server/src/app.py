@@ -1,9 +1,16 @@
 from __future__ import annotations
 
 import os
+import sys
+from pathlib import Path
 
 
 def _create_app():
+    # Ensure this repository's `src/` is on sys.path.
+    # Vercel may import this file as /var/task/src/app.py.
+    src_dir = Path(__file__).resolve().parent
+    sys.path.insert(0, str(src_dir))
+
     app = os.getenv("EROGE_REVIEW_APP").strip().lower()
 
     if app == "console":
