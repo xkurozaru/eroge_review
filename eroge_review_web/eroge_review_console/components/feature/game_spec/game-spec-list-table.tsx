@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import { format, isValid, parseISO } from "date-fns";
+import { formatDateTime } from "@/lib/datetime";
 
 import {
   Table,
@@ -10,24 +10,9 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { GameSpec } from "@/lib/api/gameSpecApi";
 
-export type GameSpecListItem = {
-  id?: string;
-  title: string;
-  brand: string;
-  release_date: string;
-  created_at: string;
-  updated_at: string;
-};
-
-function formatDateTime(value?: string) {
-  if (!value) return "";
-  const parsed = parseISO(value);
-  if (!isValid(parsed)) return "";
-  return format(parsed, "yyyy/MM/dd HH:mm");
-}
-
-export function GameSpecListTable({ items }: { items: GameSpecListItem[] }) {
+export function GameSpecListTable({ items }: { items: GameSpec[] }) {
   return (
     <div className="overflow-x-auto">
       <Table>

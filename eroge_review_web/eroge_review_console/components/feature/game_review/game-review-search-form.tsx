@@ -15,35 +15,31 @@ export function GameReviewSearchForm(props: {
   status: string;
 }) {
   return (
-    <form className="space-y-4" method="GET">
-      <div className="grid gap-4 md:grid-cols-3">
-        <div className="space-y-2">
-          <Label>タイトル（部分一致）</Label>
-          <Input name="title" defaultValue={props.title} />
-        </div>
-        <div className="space-y-2">
-          <Label>ブランド名（部分一致）</Label>
-          <Input name="brand" defaultValue={props.brand} />
-        </div>
-        <div className="space-y-2">
-          <Label>ステータス</Label>
-          <select
-            name="status"
-            defaultValue={props.status}
-            className="h-10 w-full rounded-md border bg-background px-3 text-sm"
-          >
-            <option value="">（指定なし）</option>
-            <option value="unreviewed">未評価</option>
-            <option value="published">評価済・公開</option>
-            <option value="draft">非公開</option>
-          </select>
-        </div>
+    <form className="flex flex-col gap-3 md:flex-row md:items-end" method="get">
+      <div className="flex-1 space-y-2">
+        <Label>タイトル（部分一致）</Label>
+        <Input name="title" defaultValue={props.title} />
+      </div>
+      <div className="flex-1 space-y-2">
+        <Label>ブランド名（部分一致）</Label>
+        <Input name="brand" defaultValue={props.brand} />
+      </div>
+      <div className="flex-1 space-y-2">
+        <Label>ステータス</Label>
+        <select
+          name="status"
+          defaultValue={props.status}
+          className="h-10 w-full rounded-md border bg-background px-3 text-sm"
+        >
+          <option value="">（指定なし）</option>
+          <option value="unreviewed">未評価</option>
+          <option value="published">評価済・公開</option>
+          <option value="draft">非公開</option>
+        </select>
       </div>
 
       <div>
-        <Button type="submit" variant="outline">
-          検索
-        </Button>
+        <Button type="submit">検索</Button>
       </div>
     </form>
   );

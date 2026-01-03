@@ -31,8 +31,10 @@ function toRequiredInt(value: FormDataEntryValue | null, name: string): number {
 }
 
 function toBool(value: FormDataEntryValue | null): boolean {
-  // For checkbox: present => "on".
-  return value != null;
+  const s = String(value ?? "")
+    .trim()
+    .toLowerCase();
+  return s === "true" || s === "1" || s === "on";
 }
 
 function toDatetimeLocal(value: string | null): string | null {
@@ -96,7 +98,7 @@ export default async function GameReviewDetailPage(
       <header className="flex items-center justify-between">
         <h1 className="text-xl font-semibold">Game Review 詳細・編集</h1>
         <form action={deleteAction}>
-          <Button type="submit" variant="outline">
+          <Button type="submit" variant="destructive">
             削除
           </Button>
         </form>
@@ -113,7 +115,7 @@ export default async function GameReviewDetailPage(
           started_at: fromServerDatetime(review.started_at),
           ended_at: fromServerDatetime(review.ended_at),
           body: review.body,
-          is_published: review.is_published,
+          is_published: review.published_at != null,
         }}
       />
     </div>

@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from datetime import datetime, timezone
+
 from sqlmodel import Session, func, select
 
 from eroge_review_server.common.game_review.model import (
@@ -40,19 +42,27 @@ class GameReviewRepository:
             statement = statement.where(GameSpec.brand.ilike(like))
             count_statement = count_statement.where(GameSpec.brand.ilike(like))
 
-        if status == GameReviewStatus.unreviewed:
-            statement = statement.where(GameReview.id.is_(None))
-            count_statement = count_statement.where(GameReview.id.is_(None))
-        elif status == GameReviewStatus.published:
-            statement = statement.where(GameReview.is_published.is_(True))
-            count_statement = count_statement.where(GameReview.is_published.is_(True))
-        elif status == GameReviewStatus.draft:
-            statement = statement.where(GameReview.id.is_not(None)).where(GameReview.is_published.is_(False))
-            count_statement = count_statement.where(GameReview.id.is_not(None)).where(
-                GameReview.is_published.is_(False)
-            )
+        match status:
+            case GameReviewStatus.unreviewed:
+                statement = statement.where(GameReview.id.is_(None))
+                count_statement = count_statement.where(GameReview.id.is_(None))
 
-        statement = statement.order_by(GameSpec.id.desc()).offset(offset).limit(limit)
+            case GameReviewStatus.draft:
+                statement = statement.where(GameReview.id.is_not(None)).where(GameReview.published_at.is_(None))
+                count_statement = count_statement.where(GameReview.id.is_not(None)).where(
+                    GameReview.published_at.is_(None)
+                )
+
+            case GameReviewStatus.published:
+                statement = statement.where(GameReview.published_at.is_not(None))
+                count_statement = count_statement.where(GameReview.published_at.is_not(None))
+
+        if status == GameReviewStatus.published:
+            statement = statement.order_by(GameReview.published_at.desc(), GameSpec.id.desc())
+        else:
+            statement = statement.order_by(GameSpec.id.desc())
+
+        statement = statement.offset(offset).limit(limit)
 
         rows = list(self._session.exec(statement))
         total_row = self._session.exec(count_statement).one()
@@ -70,7 +80,9 @@ class GameReviewRepository:
                     review_title=(game_review.title if game_review else None),
                     potential_score=(game_review.potential_score if game_review else None),
                     rating_score=(game_review.rating_score if game_review else None),
-                    is_published=(game_review.is_published if game_review else None),
+                    review_created_at=(game_review.created_at if game_review else None),
+                    review_updated_at=(game_review.updated_at if game_review else None),
+                    published_at=(game_review.published_at if game_review else None),
                 )
             )
 
@@ -97,7 +109,16 @@ class GameReviewRepository:
         return self._session.exec(statement).first()
 
     def create(self, payload: GameReviewCreate) -> GameReview:
-        model = GameReview.model_validate(payload)
+        model = GameReview(
+            game_spec_id=payload.game_spec_id,
+            title=payload.title,
+            potential_score=payload.potential_score,
+            rating_score=payload.rating_score,
+            started_at=payload.started_at,
+            ended_at=payload.ended_at,
+            body=payload.body,
+            published_at=(datetime.now(timezone.utc) if payload.is_published else None),
+        )
         self._session.add(model)
         self._session.commit()
         self._session.refresh(model)
@@ -114,7 +135,14 @@ class GameReviewRepository:
         model.started_at = payload.started_at
         model.ended_at = payload.ended_at
         model.body = payload.body
-        model.is_published = payload.is_published
+
+        # Publishing semantics:
+        # - is_published False => unpublish
+        # - is_published True  => publish (first time sets server timestamp)
+        if not payload.is_published:
+            model.published_at = None
+        elif model.published_at is None:
+            model.published_at = datetime.now(timezone.utc)
 
         self._session.add(model)
         self._session.commit()

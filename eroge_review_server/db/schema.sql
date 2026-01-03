@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS game_review (
     started_at TIMESTAMPTZ,
     ended_at TIMESTAMPTZ,
     body TEXT,
-    is_published BOOLEAN NOT NULL,
+    published_at TIMESTAMPTZ,
     created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );

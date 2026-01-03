@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import { buttonVariants } from "@/components/ui/button";
+import { CircularGauge } from "@/components/ui/circular-gauge";
 import {
   Table,
   TableBody,
@@ -10,11 +10,44 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import type { GameReviewListItem } from "@/lib/api/gameReviewApi";
+import { formatDateTime } from "@/lib/datetime";
 
-function statusLabel(item: GameReviewListItem): string {
-  if (!item.game_review_id) return "未評価";
-  if (item.is_published) return "評価済・公開";
-  return "非公開";
+function status(
+  item: GameReviewListItem
+): "unreviewed" | "draft" | "published" {
+  if (!item.game_review_id) return "unreviewed";
+  if (item.published_at) return "published";
+  return "draft";
+}
+
+function rowClassName(item: GameReviewListItem): string {
+  const s = status(item);
+
+  // Apply background on cells to ensure it is visible across table styles.
+  if (s === "published") {
+    return "[&>td:first-child]:border-l-4 [&>td:first-child]:border-chart-2";
+  }
+  if (s === "draft") {
+    return "[&>td:first-child]:border-l-4 [&>td:first-child]:border-chart-1";
+  }
+  // unreviewed
+  return "[&>td:first-child]:border-l-4 [&>td:first-child]:border-muted-foreground";
+}
+
+function achievementRate(item: GameReviewListItem): number | null {
+  const potential = item.potential_score;
+  const rating = item.rating_score;
+  if (rating == null || potential == null || potential === 0) return null;
+  return rating / potential;
+}
+
+function achievementText(item: GameReviewListItem): string {
+  const potential = item.potential_score;
+  if (potential == null) return "-";
+
+  const rating = item.rating_score;
+  const left = rating == null ? "-" : String(rating);
+  return `${left}/${potential}`;
 }
 
 export function GameReviewListTable(props: { items: GameReviewListItem[] }) {
@@ -24,9 +57,10 @@ export function GameReviewListTable(props: { items: GameReviewListItem[] }) {
         <TableHeader>
           <TableRow>
             <TableHead>タイトル</TableHead>
-            <TableHead>ブランド名</TableHead>
-            <TableHead>ステータス</TableHead>
-            <TableHead className="w-0" />
+            <TableHead>ブランド</TableHead>
+            <TableHead>評価値/ポテンシャル値(達成率)</TableHead>
+            <TableHead>レビュー作成日時</TableHead>
+            <TableHead>レビュー更新日時</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -36,24 +70,29 @@ export function GameReviewListTable(props: { items: GameReviewListItem[] }) {
               : `/dashboard/game-reviews/create?game_spec_id=${encodeURIComponent(
                   item.game_spec_id
                 )}`;
-            const actionLabel = item.game_review_id ? "編集" : "作成";
 
             return (
-              <TableRow key={item.game_spec_id}>
-                <TableCell className="font-medium">{item.game_title}</TableCell>
-                <TableCell>{item.brand}</TableCell>
-                <TableCell>{statusLabel(item)}</TableCell>
-                <TableCell className="text-right">
-                  <Link
-                    href={href}
-                    className={buttonVariants({
-                      variant: "outline",
-                      size: "sm",
-                    })}
-                  >
-                    {actionLabel}
+              <TableRow key={item.game_spec_id} className={rowClassName(item)}>
+                <TableCell className="font-medium">
+                  <Link href={href} className="underline underline-offset-4">
+                    {item.game_title}
                   </Link>
                 </TableCell>
+                <TableCell>{item.brand}</TableCell>
+                <TableCell>
+                  {item.potential_score != null ? (
+                    <div className="flex items-center gap-2">
+                      <div className="text-sm tabular-nums">
+                        {achievementText(item)}
+                      </div>
+                      <CircularGauge value={achievementRate(item)} />
+                    </div>
+                  ) : (
+                    "-"
+                  )}
+                </TableCell>
+                <TableCell>{formatDateTime(item.review_created_at)}</TableCell>
+                <TableCell>{formatDateTime(item.review_updated_at)}</TableCell>
               </TableRow>
             );
           })}

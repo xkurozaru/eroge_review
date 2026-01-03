@@ -1,5 +1,5 @@
 import uuid
-from datetime import datetime
+from datetime import datetime, timezone
 
 from sqlalchemy import CHAR, DateTime, func
 from sqlmodel import Field, SQLModel
@@ -14,6 +14,7 @@ class IdTimestampsMixin(SQLModel):
     )
 
     created_at: datetime = Field(
+        default_factory=lambda: datetime.now(timezone.utc),
         sa_type=DateTime(timezone=True),
         nullable=False,
         sa_column_kwargs={
@@ -22,6 +23,7 @@ class IdTimestampsMixin(SQLModel):
     )
 
     updated_at: datetime = Field(
+        default_factory=lambda: datetime.now(timezone.utc),
         sa_type=DateTime(timezone=True),
         nullable=False,
         sa_column_kwargs={

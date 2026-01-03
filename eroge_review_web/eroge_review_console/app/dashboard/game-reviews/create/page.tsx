@@ -66,7 +66,11 @@ export default async function GameReviewCreatePage(
     <div className="space-y-6">
       <h1 className="text-xl font-semibold">Game Review 新規作成</h1>
 
-      <GameReviewForm action={createAction} submitLabel="新規作成" />
+      <GameReviewForm
+        action={createAction}
+        submitLabel="新規作成"
+        showBodyEditor={false}
+      />
     </div>
   );
 }
