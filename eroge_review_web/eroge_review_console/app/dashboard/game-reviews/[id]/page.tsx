@@ -96,7 +96,7 @@ export default async function GameReviewDetailPage(
       <header className="flex items-center justify-between">
         <h1 className="text-xl font-semibold">Game Review 詳細・編集</h1>
         <form action={deleteAction}>
-          <Button type="submit" variant="outline">
+          <Button type="submit" variant="destructive">
             削除
           </Button>
         </form>
