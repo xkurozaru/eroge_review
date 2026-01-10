@@ -3,7 +3,7 @@ name = "eroge-review-server"
 version = "0.1.0"
 description = "Eroge Review Server"
 readme = "README.md"
-requires-python = ">=3.11"
+requires-python = ">=3.12"
 dependencies = [
   "fastapi",
   "uvicorn[standard]",
@@ -11,6 +11,7 @@ dependencies = [
   "pydantic-settings",
   "pyyaml",
   "psycopg[binary]",
+  "uuid6",
 ]
 
 [tool.ruff]
