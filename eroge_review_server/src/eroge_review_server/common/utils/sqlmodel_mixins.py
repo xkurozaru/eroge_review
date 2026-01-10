@@ -1,13 +1,13 @@
-import uuid
 from datetime import datetime, timezone
 
 from sqlalchemy import CHAR, DateTime, func
 from sqlmodel import Field, SQLModel
+from uuid6 import uuid7
 
 
 class IdTimestampsMixin(SQLModel):
     id: str = Field(
-        default_factory=lambda: uuid.uuid7().hex,
+        default_factory=lambda: uuid7().hex,
         primary_key=True,
         nullable=False,
         sa_type=CHAR(32),
