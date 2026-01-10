@@ -18,7 +18,7 @@ class ReviewScoreStatsCommandService:
         self._repo = repo
 
     def compute_and_save_daily(self, *, stats_date: date, scope: ReviewScoreStatsScope) -> None:
-        end_ts = end_of_day(stats_date)
+        end_ts = end_of_day(day=stats_date)
         start_ts = _start_ts_for_scope(scope=scope, end_ts=end_ts)
         computed = self._repo.compute_published_scores(start_ts=start_ts, end_ts=end_ts)
         self._repo.upsert_daily(stats_date=stats_date, scope=scope, computed=computed)
