@@ -4,6 +4,23 @@
  */
 
 export interface paths {
+    "/internal/cron/review-score-stats/daily": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Run Review Score Stats Daily */
+        get: operations["run_review_score_stats_daily_internal_cron_review_score_stats_daily_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/game-specs": {
         parameters: {
             query?: never;
@@ -304,6 +321,40 @@ export interface components {
 }
 export type $defs = Record<string, never>;
 export interface operations {
+    run_review_score_stats_daily_internal_cron_review_score_stats_daily_get: {
+        parameters: {
+            query?: {
+                date?: string | null;
+            };
+            header?: {
+                "X-Console-Token"?: string | null;
+                Authorization?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     list_game_specs_game_specs_get: {
         parameters: {
             query?: {
@@ -313,7 +364,8 @@ export interface operations {
                 page_size?: number;
             };
             header?: {
-                "x-console-token"?: string | null;
+                "X-Console-Token"?: string | null;
+                Authorization?: string | null;
             };
             path?: never;
             cookie?: never;
@@ -344,7 +396,8 @@ export interface operations {
         parameters: {
             query?: never;
             header?: {
-                "x-console-token"?: string | null;
+                "X-Console-Token"?: string | null;
+                Authorization?: string | null;
             };
             path?: never;
             cookie?: never;
@@ -379,7 +432,8 @@ export interface operations {
         parameters: {
             query?: never;
             header?: {
-                "x-console-token"?: string | null;
+                "X-Console-Token"?: string | null;
+                Authorization?: string | null;
             };
             path: {
                 game_spec_id: string;
@@ -412,7 +466,8 @@ export interface operations {
         parameters: {
             query?: never;
             header?: {
-                "x-console-token"?: string | null;
+                "X-Console-Token"?: string | null;
+                Authorization?: string | null;
             };
             path: {
                 game_spec_id: string;
@@ -449,7 +504,8 @@ export interface operations {
         parameters: {
             query?: never;
             header?: {
-                "x-console-token"?: string | null;
+                "X-Console-Token"?: string | null;
+                Authorization?: string | null;
             };
             path: {
                 game_spec_id: string;
@@ -488,7 +544,8 @@ export interface operations {
                 page_size?: number;
             };
             header?: {
-                "x-console-token"?: string | null;
+                "X-Console-Token"?: string | null;
+                Authorization?: string | null;
             };
             path?: never;
             cookie?: never;
@@ -519,7 +576,8 @@ export interface operations {
         parameters: {
             query?: never;
             header?: {
-                "x-console-token"?: string | null;
+                "X-Console-Token"?: string | null;
+                Authorization?: string | null;
             };
             path?: never;
             cookie?: never;
@@ -554,7 +612,8 @@ export interface operations {
         parameters: {
             query?: never;
             header?: {
-                "x-console-token"?: string | null;
+                "X-Console-Token"?: string | null;
+                Authorization?: string | null;
             };
             path: {
                 game_review_id: string;
@@ -587,7 +646,8 @@ export interface operations {
         parameters: {
             query?: never;
             header?: {
-                "x-console-token"?: string | null;
+                "X-Console-Token"?: string | null;
+                Authorization?: string | null;
             };
             path: {
                 game_review_id: string;
@@ -624,7 +684,8 @@ export interface operations {
         parameters: {
             query?: never;
             header?: {
-                "x-console-token"?: string | null;
+                "X-Console-Token"?: string | null;
+                Authorization?: string | null;
             };
             path: {
                 game_review_id: string;

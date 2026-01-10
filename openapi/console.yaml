@@ -3,6 +3,50 @@ info:
   title: Eroge Review Console Server
   version: 0.1.0
 paths:
+  /internal/cron/review-score-stats/daily:
+    get:
+      tags:
+      - cron
+      summary: Run Review Score Stats Daily
+      operationId: run_review_score_stats_daily_internal_cron_review_score_stats_daily_get
+      parameters:
+      - name: date
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            format: date
+          - type: 'null'
+          title: Date
+      - name: X-Console-Token
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: X-Console-Token
+      - name: Authorization
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Authorization
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
   /game-specs:
     get:
       tags:
@@ -40,7 +84,7 @@ paths:
           type: integer
           default: 20
           title: Page Size
-      - name: x-console-token
+      - name: X-Console-Token
         in: header
         required: false
         schema:
@@ -48,6 +92,14 @@ paths:
           - type: string
           - type: 'null'
           title: X-Console-Token
+      - name: Authorization
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Authorization
       responses:
         '200':
           description: Successful Response
@@ -67,7 +119,7 @@ paths:
       summary: Create Game Spec
       operationId: create_game_spec_game_specs_post
       parameters:
-      - name: x-console-token
+      - name: X-Console-Token
         in: header
         required: false
         schema:
@@ -75,6 +127,14 @@ paths:
           - type: string
           - type: 'null'
           title: X-Console-Token
+      - name: Authorization
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Authorization
       requestBody:
         required: true
         content:
@@ -107,7 +167,7 @@ paths:
         schema:
           type: string
           title: Game Spec Id
-      - name: x-console-token
+      - name: X-Console-Token
         in: header
         required: false
         schema:
@@ -115,6 +175,14 @@ paths:
           - type: string
           - type: 'null'
           title: X-Console-Token
+      - name: Authorization
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Authorization
       responses:
         '200':
           description: Successful Response
@@ -140,7 +208,7 @@ paths:
         schema:
           type: string
           title: Game Spec Id
-      - name: x-console-token
+      - name: X-Console-Token
         in: header
         required: false
         schema:
@@ -148,6 +216,14 @@ paths:
           - type: string
           - type: 'null'
           title: X-Console-Token
+      - name: Authorization
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Authorization
       requestBody:
         required: true
         content:
@@ -179,7 +255,7 @@ paths:
         schema:
           type: string
           title: Game Spec Id
-      - name: x-console-token
+      - name: X-Console-Token
         in: header
         required: false
         schema:
@@ -187,6 +263,14 @@ paths:
           - type: string
           - type: 'null'
           title: X-Console-Token
+      - name: Authorization
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Authorization
       responses:
         '200':
           description: Successful Response
@@ -244,7 +328,7 @@ paths:
           type: integer
           default: 20
           title: Page Size
-      - name: x-console-token
+      - name: X-Console-Token
         in: header
         required: false
         schema:
@@ -252,6 +336,14 @@ paths:
           - type: string
           - type: 'null'
           title: X-Console-Token
+      - name: Authorization
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Authorization
       responses:
         '200':
           description: Successful Response
@@ -271,7 +363,7 @@ paths:
       summary: Create Game Review
       operationId: create_game_review_game_reviews_post
       parameters:
-      - name: x-console-token
+      - name: X-Console-Token
         in: header
         required: false
         schema:
@@ -279,6 +371,14 @@ paths:
           - type: string
           - type: 'null'
           title: X-Console-Token
+      - name: Authorization
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Authorization
       requestBody:
         required: true
         content:
@@ -311,7 +411,7 @@ paths:
         schema:
           type: string
           title: Game Review Id
-      - name: x-console-token
+      - name: X-Console-Token
         in: header
         required: false
         schema:
@@ -319,6 +419,14 @@ paths:
           - type: string
           - type: 'null'
           title: X-Console-Token
+      - name: Authorization
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Authorization
       responses:
         '200':
           description: Successful Response
@@ -344,7 +452,7 @@ paths:
         schema:
           type: string
           title: Game Review Id
-      - name: x-console-token
+      - name: X-Console-Token
         in: header
         required: false
         schema:
@@ -352,6 +460,14 @@ paths:
           - type: string
           - type: 'null'
           title: X-Console-Token
+      - name: Authorization
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Authorization
       requestBody:
         required: true
         content:
@@ -383,7 +499,7 @@ paths:
         schema:
           type: string
           title: Game Review Id
-      - name: x-console-token
+      - name: X-Console-Token
         in: header
         required: false
         schema:
@@ -391,6 +507,14 @@ paths:
           - type: string
           - type: 'null'
           title: X-Console-Token
+      - name: Authorization
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Authorization
       responses:
         '200':
           description: Successful Response
