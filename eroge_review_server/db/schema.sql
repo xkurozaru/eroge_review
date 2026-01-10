@@ -23,3 +23,22 @@ CREATE TABLE IF NOT EXISTS game_review (
     created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
+
+CREATE TABLE IF NOT EXISTS review_score_stats_daily (
+    id CHAR(32) PRIMARY KEY,
+    stats_date DATE NOT NULL,
+    scope TEXT NOT NULL,
+
+    rating_count INTEGER NOT NULL,
+    rating_avg DOUBLE PRECISION,
+    rating_stddev DOUBLE PRECISION,
+
+    potential_count INTEGER NOT NULL,
+    potential_avg DOUBLE PRECISION,
+    potential_stddev DOUBLE PRECISION,
+
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+
+    CONSTRAINT uq_review_score_stats_daily_date_scope UNIQUE (stats_date, scope)
+);

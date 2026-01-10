@@ -43,6 +43,25 @@ Vercel 側では「console」「showcase」を別 Project として作り、環�
 - `EROGE_REVIEW_APP=showcase`（Showcase 用 Project）
 - `EROGE_REVIEW_APP=console`（Console 用 Project）
 
+## Daily Stats（Cron）
+
+レビューの採点を監視するために、日次でスコア分布（平均・標準偏差・件数）のスナップショットを保存できます。
+
+- Endpoint（Console Server）: `GET /internal/cron/review-score-stats/daily`
+- Query: `?date=YYYY-MM-DD`（省略時は JST の「前日」を集計して保存）
+- Scopes（現時点）:
+  - `published_all`
+  - `published_90d`
+
+レスポンス:
+
+- `{"stats_date":"YYYY-MM-DD"}`
+
+認証:
+
+- 推奨: Vercel Project に `CRON_SECRET` を設定する（Vercel Cron が `Authorization: Bearer <CRON_SECRET>` を自動送信）
+- アプリ側は `CRON_SECRET` を参照して照合します
+
 ## DB Migration（Atlas）
 
 Atlas で [db/schema.sql](db/schema.sql) を適用してスキーマ管理します。
