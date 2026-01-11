@@ -3,50 +3,6 @@ info:
   title: Eroge Review Console Server
   version: 0.1.0
 paths:
-  /internal/cron/review-score-stats/daily:
-    get:
-      tags:
-      - cron
-      summary: Run Review Score Stats Daily
-      operationId: run_review_score_stats_daily_internal_cron_review_score_stats_daily_get
-      parameters:
-      - name: date
-        in: query
-        required: false
-        schema:
-          anyOf:
-          - type: string
-            format: date
-          - type: 'null'
-          title: Date
-      - name: X-Console-Token
-        in: header
-        required: false
-        schema:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: X-Console-Token
-      - name: Authorization
-        in: header
-        required: false
-        schema:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Authorization
-      responses:
-        '200':
-          description: Successful Response
-          content:
-            application/json:
-              schema: {}
-        '422':
-          description: Validation Error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HTTPValidationError'
   /game-specs:
     get:
       tags:
@@ -92,14 +48,6 @@ paths:
           - type: string
           - type: 'null'
           title: X-Console-Token
-      - name: Authorization
-        in: header
-        required: false
-        schema:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Authorization
       responses:
         '200':
           description: Successful Response
@@ -127,14 +75,6 @@ paths:
           - type: string
           - type: 'null'
           title: X-Console-Token
-      - name: Authorization
-        in: header
-        required: false
-        schema:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Authorization
       requestBody:
         required: true
         content:
@@ -175,14 +115,6 @@ paths:
           - type: string
           - type: 'null'
           title: X-Console-Token
-      - name: Authorization
-        in: header
-        required: false
-        schema:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Authorization
       responses:
         '200':
           description: Successful Response
@@ -216,14 +148,6 @@ paths:
           - type: string
           - type: 'null'
           title: X-Console-Token
-      - name: Authorization
-        in: header
-        required: false
-        schema:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Authorization
       requestBody:
         required: true
         content:
@@ -263,14 +187,6 @@ paths:
           - type: string
           - type: 'null'
           title: X-Console-Token
-      - name: Authorization
-        in: header
-        required: false
-        schema:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Authorization
       responses:
         '200':
           description: Successful Response
@@ -336,14 +252,6 @@ paths:
           - type: string
           - type: 'null'
           title: X-Console-Token
-      - name: Authorization
-        in: header
-        required: false
-        schema:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Authorization
       responses:
         '200':
           description: Successful Response
@@ -371,14 +279,6 @@ paths:
           - type: string
           - type: 'null'
           title: X-Console-Token
-      - name: Authorization
-        in: header
-        required: false
-        schema:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Authorization
       requestBody:
         required: true
         content:
@@ -419,14 +319,6 @@ paths:
           - type: string
           - type: 'null'
           title: X-Console-Token
-      - name: Authorization
-        in: header
-        required: false
-        schema:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Authorization
       responses:
         '200':
           description: Successful Response
@@ -460,14 +352,6 @@ paths:
           - type: string
           - type: 'null'
           title: X-Console-Token
-      - name: Authorization
-        in: header
-        required: false
-        schema:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Authorization
       requestBody:
         required: true
         content:
@@ -507,6 +391,79 @@ paths:
           - type: string
           - type: 'null'
           title: X-Console-Token
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /review-score-stats/daily:
+    get:
+      tags:
+      - review_score_stats
+      summary: List Review Score Stats Daily
+      operationId: list_review_score_stats_daily_review_score_stats_daily_get
+      parameters:
+      - name: since
+        in: query
+        required: true
+        schema:
+          type: string
+          format: date
+          title: Since
+      - name: until
+        in: query
+        required: true
+        schema:
+          type: string
+          format: date
+          title: Until
+      - name: X-Console-Token
+        in: header
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: X-Console-Token
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ReviewScoreStatsDaily'
+                title: Response List Review Score Stats Daily Review Score Stats Daily Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /internal/cron/review-score-stats/daily:
+    get:
+      tags:
+      - cron
+      summary: Run Review Score Stats Daily
+      operationId: run_review_score_stats_daily_internal_cron_review_score_stats_daily_get
+      parameters:
+      - name: date
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            format: date
+          - type: 'null'
+          title: Date
       - name: Authorization
         in: header
         required: false
@@ -909,6 +866,59 @@ components:
           title: Detail
       type: object
       title: HTTPValidationError
+    ReviewScoreStatsDaily:
+      properties:
+        id:
+          type: string
+          title: Id
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        updated_at:
+          type: string
+          format: date-time
+          title: Updated At
+        rating_count:
+          type: integer
+          title: Rating Count
+        rating_avg:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Rating Avg
+        rating_stddev:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Rating Stddev
+        potential_count:
+          type: integer
+          title: Potential Count
+        potential_avg:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Potential Avg
+        potential_stddev:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Potential Stddev
+        stats_date:
+          type: string
+          format: date
+          title: Stats Date
+        scope:
+          type: string
+          title: Scope
+      type: object
+      required:
+      - rating_count
+      - potential_count
+      - stats_date
+      - scope
+      title: ReviewScoreStatsDaily
     ValidationError:
       properties:
         loc:
