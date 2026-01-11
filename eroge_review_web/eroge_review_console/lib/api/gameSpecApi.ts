@@ -1,7 +1,4 @@
-import {
-  getConsoleApiToken,
-  getConsoleServerBaseUrl,
-} from "@/lib/api/consoleServer";
+import { consoleFetch } from "@/lib/api/consoleServer";
 
 import type { paths } from "@/lib/api";
 
@@ -16,30 +13,6 @@ type GameSpecCreate =
 
 type GameSpecUpdate =
   paths["/game-specs/{game_spec_id}"]["put"]["requestBody"]["content"]["application/json"];
-
-function buildHeaders(): HeadersInit {
-  const headers: Record<string, string> = {
-    "Content-Type": "application/json",
-  };
-  headers["X-Console-Token"] = getConsoleApiToken();
-  return headers;
-}
-
-async function consoleFetch(
-  path: string,
-  init?: RequestInit
-): Promise<Response> {
-  const baseUrl = getConsoleServerBaseUrl();
-  const url = `${baseUrl}${path}`;
-  return fetch(url, {
-    ...init,
-    headers: {
-      ...buildHeaders(),
-      ...(init?.headers || {}),
-    },
-    cache: "no-store",
-  });
-}
 
 export async function listGameSpecs(params: {
   title?: string;
