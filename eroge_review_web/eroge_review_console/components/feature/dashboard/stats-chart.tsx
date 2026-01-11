@@ -1,11 +1,11 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import {
-  Area,
   Bar,
   CartesianGrid,
   ComposedChart,
+  ErrorBar,
   Legend,
   Line,
   ResponsiveContainer,
@@ -23,6 +23,20 @@ interface StatsChartProps {
 }
 
 export function StatsChart({ data, scope }: StatsChartProps) {
+  const [hiddenSeries, setHiddenSeries] = useState<Set<string>>(new Set());
+
+  const toggleSeries = (dataKey: string | number) => {
+    const key = String(dataKey);
+    setHiddenSeries((prev) => {
+      const newSet = new Set(prev);
+      if (newSet.has(key)) {
+        newSet.delete(key);
+      } else {
+        newSet.add(key);
+      }
+      return newSet;
+    });
+  };
   const chartData = useMemo(() => {
     return data
       .filter((item) => item.scope === scope)
@@ -38,10 +52,10 @@ export function StatsChart({ data, scope }: StatsChartProps) {
           potentialAvg,
           ratingCount: item.rating_count,
           potentialCount: item.potential_count,
-          ratingUpper: Math.min(100, ratingAvg + ratingStddev),
-          ratingLower: Math.max(0, ratingAvg - ratingStddev),
-          potentialUpper: Math.min(100, potentialAvg + potentialStddev),
-          potentialLower: Math.max(0, potentialAvg - potentialStddev),
+          ratingStddev,
+          potentialStddev,
+          ratingError: [ratingStddev, ratingStddev],
+          potentialError: [potentialStddev, potentialStddev],
         };
       })
       .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
@@ -78,33 +92,50 @@ export function StatsChart({ data, scope }: StatsChartProps) {
                 return new Date(value as string).toLocaleDateString("ja-JP");
               }}
               formatter={(value, name, props) => {
-                // 標準偏差の範囲は表示しない
-                if (
-                  name === "ratingUpper" ||
-                  name === "ratingLower" ||
-                  name === "potentialUpper" ||
-                  name === "potentialLower"
-                ) {
+                const numValue = typeof value === "number" ? value : 0;
+
+                // 標準偏差は個別に表示しない（平均値と一緒に表示）
+                if (name === "ratingStddev" || name === "potentialStddev") {
                   return null;
                 }
 
-                const numValue = typeof value === "number" ? value : 0;
-                if (name === "ratingAvg" || name === "potentialAvg") {
+                if (name === "ratingAvg") {
+                  const stddev = props.payload.ratingStddev;
                   return [
-                    numValue.toFixed(2),
-                    name === "ratingAvg" ? "評価平均" : "期待値平均",
+                    `${numValue.toFixed(2)} (±${stddev.toFixed(2)})`,
+                    "評価平均",
                   ];
                 }
+
+                if (name === "potentialAvg") {
+                  const stddev = props.payload.potentialStddev;
+                  return [
+                    `${numValue.toFixed(2)} (±${stddev.toFixed(2)})`,
+                    "期待値平均",
+                  ];
+                }
+
                 if (name === "ratingCount" || name === "potentialCount") {
                   return [
                     numValue,
                     name === "ratingCount" ? "評価件数" : "期待値件数",
                   ];
                 }
+
                 return [numValue.toFixed(2), name];
               }}
             />
             <Legend
+              onClick={(e) => {
+                if (
+                  e.dataKey &&
+                  (typeof e.dataKey === "string" ||
+                    typeof e.dataKey === "number")
+                ) {
+                  toggleSeries(e.dataKey);
+                }
+              }}
+              wrapperStyle={{ cursor: "pointer" }}
               formatter={(value) => {
                 switch (value) {
                   case "ratingAvg":
@@ -121,45 +152,7 @@ export function StatsChart({ data, scope }: StatsChartProps) {
               }}
             />
 
-            {/* 標準偏差の範囲（半透明のエリア） */}
-            <Area
-              yAxisId="left"
-              type="monotone"
-              dataKey="ratingUpper"
-              stroke="none"
-              fill="#8884d8"
-              fillOpacity={0.1}
-              legendType="none"
-            />
-            <Area
-              yAxisId="left"
-              type="monotone"
-              dataKey="ratingLower"
-              stroke="none"
-              fill="#8884d8"
-              fillOpacity={0.1}
-              legendType="none"
-            />
-            <Area
-              yAxisId="left"
-              type="monotone"
-              dataKey="potentialUpper"
-              stroke="none"
-              fill="#82ca9d"
-              fillOpacity={0.1}
-              legendType="none"
-            />
-            <Area
-              yAxisId="left"
-              type="monotone"
-              dataKey="potentialLower"
-              stroke="none"
-              fill="#82ca9d"
-              fillOpacity={0.1}
-              legendType="none"
-            />
-
-            {/* 平均値の折れ線グラフ */}
+            {/* 平均値の折れ線グラフ（エラーバー付き） */}
             <Line
               yAxisId="left"
               type="monotone"
@@ -168,7 +161,14 @@ export function StatsChart({ data, scope }: StatsChartProps) {
               strokeWidth={2}
               name="ratingAvg"
               dot={{ r: 3 }}
-            />
+              hide={hiddenSeries.has("ratingAvg")}
+            >
+              <ErrorBar
+                dataKey="ratingError"
+                stroke="#8884d8"
+                strokeWidth={1.5}
+              />
+            </Line>
             <Line
               yAxisId="left"
               type="monotone"
@@ -177,7 +177,14 @@ export function StatsChart({ data, scope }: StatsChartProps) {
               strokeWidth={2}
               name="potentialAvg"
               dot={{ r: 3 }}
-            />
+              hide={hiddenSeries.has("potentialAvg")}
+            >
+              <ErrorBar
+                dataKey="potentialError"
+                stroke="#82ca9d"
+                strokeWidth={1.5}
+              />
+            </Line>
 
             {/* 件数の棒グラフ */}
             <Bar
@@ -186,6 +193,7 @@ export function StatsChart({ data, scope }: StatsChartProps) {
               fill="#ffc658"
               name="ratingCount"
               opacity={0.6}
+              hide={hiddenSeries.has("ratingCount")}
             />
             <Bar
               yAxisId="right"
@@ -193,6 +201,7 @@ export function StatsChart({ data, scope }: StatsChartProps) {
               fill="#ff7c7c"
               name="potentialCount"
               opacity={0.6}
+              hide={hiddenSeries.has("potentialCount")}
             />
           </ComposedChart>
         </ResponsiveContainer>
