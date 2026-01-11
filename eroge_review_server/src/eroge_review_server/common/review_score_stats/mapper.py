@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 from datetime import date, datetime
 
 from sqlalchemy import func
@@ -12,6 +10,14 @@ from eroge_review_server.common.review_score_stats.model import ReviewScoreStats
 class ReviewScoreStatsRepository:
     def __init__(self, session: Session) -> None:
         self._session = session
+
+    def list_daily(self, *, since: date, until: date) -> list[ReviewScoreStatsDaily]:
+        statement = (
+            select(ReviewScoreStatsDaily)
+            .where(ReviewScoreStatsDaily.stats_date >= since, ReviewScoreStatsDaily.stats_date <= until)
+            .order_by(ReviewScoreStatsDaily.stats_date)
+        )
+        return list(self._session.exec(statement).all())
 
     def compute_published_scores(
         self,

@@ -4,23 +4,6 @@
  */
 
 export interface paths {
-    "/internal/cron/review-score-stats/daily": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Run Review Score Stats Daily */
-        get: operations["run_review_score_stats_daily_internal_cron_review_score_stats_daily_get"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
     "/game-specs": {
         parameters: {
             query?: never;
@@ -90,6 +73,40 @@ export interface paths {
         post?: never;
         /** Delete Game Review */
         delete: operations["delete_game_review_game_reviews__game_review_id__delete"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/review-score-stats/daily": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Review Score Stats Daily */
+        get: operations["list_review_score_stats_daily_review_score_stats_daily_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/internal/cron/review-score-stats/daily": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Run Review Score Stats Daily */
+        get: operations["run_review_score_stats_daily_internal_cron_review_score_stats_daily_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
         options?: never;
         head?: never;
         patch?: never;
@@ -303,6 +320,40 @@ export interface components {
             /** Detail */
             detail?: components["schemas"]["ValidationError"][];
         };
+        /** ReviewScoreStatsDaily */
+        ReviewScoreStatsDaily: {
+            /** Id */
+            id?: string;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at?: string;
+            /**
+             * Updated At
+             * Format: date-time
+             */
+            updated_at?: string;
+            /** Rating Count */
+            rating_count: number;
+            /** Rating Avg */
+            rating_avg?: number | null;
+            /** Rating Stddev */
+            rating_stddev?: number | null;
+            /** Potential Count */
+            potential_count: number;
+            /** Potential Avg */
+            potential_avg?: number | null;
+            /** Potential Stddev */
+            potential_stddev?: number | null;
+            /**
+             * Stats Date
+             * Format: date
+             */
+            stats_date: string;
+            /** Scope */
+            scope: string;
+        };
         /** ValidationError */
         ValidationError: {
             /** Location */
@@ -321,40 +372,6 @@ export interface components {
 }
 export type $defs = Record<string, never>;
 export interface operations {
-    run_review_score_stats_daily_internal_cron_review_score_stats_daily_get: {
-        parameters: {
-            query?: {
-                date?: string | null;
-            };
-            header?: {
-                "X-Console-Token"?: string | null;
-                Authorization?: string | null;
-            };
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Successful Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": unknown;
-                };
-            };
-            /** @description Validation Error */
-            422: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["HTTPValidationError"];
-                };
-            };
-        };
-    };
     list_game_specs_game_specs_get: {
         parameters: {
             query?: {
@@ -365,7 +382,6 @@ export interface operations {
             };
             header?: {
                 "X-Console-Token"?: string | null;
-                Authorization?: string | null;
             };
             path?: never;
             cookie?: never;
@@ -397,7 +413,6 @@ export interface operations {
             query?: never;
             header?: {
                 "X-Console-Token"?: string | null;
-                Authorization?: string | null;
             };
             path?: never;
             cookie?: never;
@@ -433,7 +448,6 @@ export interface operations {
             query?: never;
             header?: {
                 "X-Console-Token"?: string | null;
-                Authorization?: string | null;
             };
             path: {
                 game_spec_id: string;
@@ -467,7 +481,6 @@ export interface operations {
             query?: never;
             header?: {
                 "X-Console-Token"?: string | null;
-                Authorization?: string | null;
             };
             path: {
                 game_spec_id: string;
@@ -505,7 +518,6 @@ export interface operations {
             query?: never;
             header?: {
                 "X-Console-Token"?: string | null;
-                Authorization?: string | null;
             };
             path: {
                 game_spec_id: string;
@@ -545,7 +557,6 @@ export interface operations {
             };
             header?: {
                 "X-Console-Token"?: string | null;
-                Authorization?: string | null;
             };
             path?: never;
             cookie?: never;
@@ -577,7 +588,6 @@ export interface operations {
             query?: never;
             header?: {
                 "X-Console-Token"?: string | null;
-                Authorization?: string | null;
             };
             path?: never;
             cookie?: never;
@@ -613,7 +623,6 @@ export interface operations {
             query?: never;
             header?: {
                 "X-Console-Token"?: string | null;
-                Authorization?: string | null;
             };
             path: {
                 game_review_id: string;
@@ -647,7 +656,6 @@ export interface operations {
             query?: never;
             header?: {
                 "X-Console-Token"?: string | null;
-                Authorization?: string | null;
             };
             path: {
                 game_review_id: string;
@@ -685,11 +693,77 @@ export interface operations {
             query?: never;
             header?: {
                 "X-Console-Token"?: string | null;
-                Authorization?: string | null;
             };
             path: {
                 game_review_id: string;
             };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_review_score_stats_daily_review_score_stats_daily_get: {
+        parameters: {
+            query: {
+                since: string;
+                until: string;
+            };
+            header?: {
+                "X-Console-Token"?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ReviewScoreStatsDaily"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    run_review_score_stats_daily_internal_cron_review_score_stats_daily_get: {
+        parameters: {
+            query?: {
+                date?: string | null;
+            };
+            header?: {
+                Authorization?: string | null;
+            };
+            path?: never;
             cookie?: never;
         };
         requestBody?: never;

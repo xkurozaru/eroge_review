@@ -27,3 +27,8 @@ Feature directory
     - utils.ts（shadcn の cn など）
   - etc...
 - eroge_review_console
+
+## API Call
+
+index.ts の定義を利用して request/response 型と API メソッドを hogeApi.ts に定義する
+API はサーバーサイドコンポーネントからのみ実行する

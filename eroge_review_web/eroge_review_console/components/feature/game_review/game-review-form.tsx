@@ -188,7 +188,7 @@ export function GameReviewForm(props: {
 
       <div className="grid gap-4 md:grid-cols-3">
         <div className="space-y-2">
-          <Label>ポテンシャル値</Label>
+          <Label>期待値</Label>
           <Input
             name="potential_score"
             type="number"
@@ -217,7 +217,7 @@ export function GameReviewForm(props: {
           />
         </div>
         <div className="space-y-3">
-          <Label>達成率（評価値/ポテンシャル値）</Label>
+          <Label>達成率（評価値/期待値）</Label>
           <div className="flex h-14 items-center">
             <CircularGauge value={achievementRate} size="md" />
           </div>
