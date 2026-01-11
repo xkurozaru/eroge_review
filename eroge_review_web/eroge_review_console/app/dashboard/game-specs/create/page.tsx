@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 
 import { GameSpecForm } from "@/components/feature/game_spec/game-spec-form";
+import { PageHeader } from "@/components/ui/page-header";
 import { createGameSpec } from "@/lib/api/gameSpecApi";
 
 export default function GameSpecCreatePage() {
@@ -21,7 +22,7 @@ export default function GameSpecCreatePage() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-xl font-semibold">Game Spec 新規作成</h1>
+      <PageHeader>Game Spec 新規作成</PageHeader>
 
       <GameSpecForm action={createAction} submitLabel="新規作成" />
     </div>

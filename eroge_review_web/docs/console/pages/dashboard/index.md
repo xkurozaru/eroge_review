@@ -9,3 +9,5 @@
 ## デザイン
 
 ReviewScoreStatsDaily の推移グラフ
+
+<最新コメントリスト機能実装予定>

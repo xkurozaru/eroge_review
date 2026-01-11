@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 
 import { GameSpecForm } from "@/components/feature/game_spec/game-spec-form";
 import { Button } from "@/components/ui/button";
+import { PageHeader } from "@/components/ui/page-header";
 import {
   deleteGameSpec,
   getGameSpec,
@@ -40,14 +41,17 @@ export default async function GameSpecDetailPage(
 
   return (
     <div className="space-y-6">
-      <header className="flex items-center justify-between">
-        <h1 className="text-xl font-semibold">Game Spec 詳細・編集</h1>
-        <form action={deleteAction}>
-          <Button type="submit" variant="outline">
-            削除
-          </Button>
-        </form>
-      </header>
+      <PageHeader
+        actions={
+          <form action={deleteAction}>
+            <Button type="submit" variant="outline">
+              削除
+            </Button>
+          </form>
+        }
+      >
+        Game Spec 詳細・編集
+      </PageHeader>
 
       <GameSpecForm
         action={updateAction}
