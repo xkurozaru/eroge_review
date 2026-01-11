@@ -22,7 +22,7 @@ class ConsoleReviewScoreStatsApplication:
     def list_daily(self, *, since: date, until: date) -> list[ReviewScoreStatsDaily]:
         return self._query_service.list_daily(since=since, until=until)
 
-    def run_daily_snapshot(self, *, stats_date: date | None) -> None:
+    def run_daily_snapshot(self, *, stats_date: date | None) -> date:
         target = stats_date or _default_stats_date_jst()
 
         for scope in [ReviewScoreStatsScope.PUBLISHED_ALL, ReviewScoreStatsScope.PUBLISHED_90D]:
@@ -31,6 +31,7 @@ class ConsoleReviewScoreStatsApplication:
                 scope=scope,
             )
         self._session.commit()
+        return target
 
 
 def _default_stats_date_jst() -> date:

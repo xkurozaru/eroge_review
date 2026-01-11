@@ -403,7 +403,8 @@ paths:
           description: Successful Response
           content:
             application/json:
-              schema: {}
+              schema:
+                $ref: '#/components/schemas/CronReviewScoreStatsDailyResponse'
         '422':
           description: Validation Error
           content:
@@ -412,6 +413,20 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
+    CronReviewScoreStatsDailyResponse:
+      properties:
+        stats_date:
+          type: string
+          format: date
+          title: Stats Date
+        execution_time:
+          type: number
+          title: Execution Time
+      type: object
+      required:
+      - stats_date
+      - execution_time
+      title: CronReviewScoreStatsDailyResponse
     GameReview:
       properties:
         id:

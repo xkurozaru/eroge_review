@@ -116,6 +116,16 @@ export interface paths {
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
+        /** CronReviewScoreStatsDailyResponse */
+        CronReviewScoreStatsDailyResponse: {
+            /**
+             * Stats Date
+             * Format: date
+             */
+            stats_date: string;
+            /** Execution Time */
+            execution_time: number;
+        };
         /** GameReview */
         GameReview: {
             /** Id */
@@ -750,7 +760,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": unknown;
+                    "application/json": components["schemas"]["CronReviewScoreStatsDailyResponse"];
                 };
             };
             /** @description Validation Error */
