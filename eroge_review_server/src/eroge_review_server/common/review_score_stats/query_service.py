@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from datetime import date
 
 from eroge_review_server.common.review_score_stats.mapper import ReviewScoreStatsRepository

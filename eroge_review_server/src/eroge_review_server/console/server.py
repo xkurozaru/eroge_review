@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from fastapi import Depends, FastAPI, HTTPException
 from fastapi.security import APIKeyHeader, HTTPAuthorizationCredentials, HTTPBearer
 

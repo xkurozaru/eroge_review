@@ -1,7 +1,5 @@
 from __future__ import annotations
 
-from datetime import datetime, timezone
-
 from sqlmodel import Session, func, select
 
 from eroge_review_server.common.game_review.model import (
@@ -12,6 +10,7 @@ from eroge_review_server.common.game_review.model import (
     GameReviewUpdate,
 )
 from eroge_review_server.common.game_spec.model import GameSpec
+from eroge_review_server.common.utils.datetime import now
 
 
 class GameReviewRepository:
@@ -117,7 +116,7 @@ class GameReviewRepository:
             started_at=payload.started_at,
             ended_at=payload.ended_at,
             body=payload.body,
-            published_at=(datetime.now(timezone.utc) if payload.is_published else None),
+            published_at=(now() if payload.is_published else None),
         )
         self._session.add(model)
         self._session.commit()
@@ -142,7 +141,7 @@ class GameReviewRepository:
         if not payload.is_published:
             model.published_at = None
         elif model.published_at is None:
-            model.published_at = datetime.now(timezone.utc)
+            model.published_at = now()
 
         self._session.add(model)
         self._session.commit()
