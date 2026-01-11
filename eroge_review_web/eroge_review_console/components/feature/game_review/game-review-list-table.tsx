@@ -58,7 +58,7 @@ export function GameReviewListTable(props: { items: GameReviewListItem[] }) {
           <TableRow>
             <TableHead>タイトル</TableHead>
             <TableHead>ブランド</TableHead>
-            <TableHead>評価値/ポテンシャル値(達成率)</TableHead>
+            <TableHead>評価値/期待値(達成率)</TableHead>
             <TableHead>レビュー作成日時</TableHead>
             <TableHead>レビュー更新日時</TableHead>
           </TableRow>
