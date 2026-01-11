@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 
 import { GameReviewForm } from "@/components/feature/game_review/game-review-form";
 import { Button } from "@/components/ui/button";
+import { PageHeader } from "@/components/ui/page-header";
 import {
   deleteGameReview,
   getGameReview,
@@ -95,14 +96,17 @@ export default async function GameReviewDetailPage(
 
   return (
     <div className="space-y-6">
-      <header className="flex items-center justify-between">
-        <h1 className="text-xl font-semibold">Game Review 詳細・編集</h1>
-        <form action={deleteAction}>
-          <Button type="submit" variant="destructive">
-            削除
-          </Button>
-        </form>
-      </header>
+      <PageHeader
+        actions={
+          <form action={deleteAction}>
+            <Button type="submit" variant="destructive">
+              削除
+            </Button>
+          </form>
+        }
+      >
+        Game Review 詳細・編集
+      </PageHeader>
 
       <GameReviewForm
         action={updateAction}

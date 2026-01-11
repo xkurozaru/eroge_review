@@ -8,6 +8,7 @@ import {
 } from "@/components/feature/game_spec/game-spec-search-form";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { PageHeader } from "@/components/ui/page-header";
 import { listGameSpecs } from "@/lib/api/gameSpecApi";
 
 export default async function GameSpecsPage(
@@ -40,15 +41,18 @@ export default async function GameSpecsPage(
 
   return (
     <div className="space-y-6">
-      <header className="flex items-center justify-between">
-        <h1 className="text-xl font-semibold">Game Spec 管理</h1>
-        <Link
-          href="/dashboard/game-specs/create"
-          className={buttonVariants({ variant: "default" })}
-        >
-          新規作成
-        </Link>
-      </header>
+      <PageHeader
+        actions={
+          <Link
+            href="/dashboard/game-specs/create"
+            className={buttonVariants({ variant: "default" })}
+          >
+            新規作成
+          </Link>
+        }
+      >
+        Game Spec
+      </PageHeader>
 
       <Card>
         <CardContent>

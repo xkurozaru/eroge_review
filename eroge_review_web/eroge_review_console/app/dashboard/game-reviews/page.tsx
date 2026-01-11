@@ -5,6 +5,7 @@ import {
   type GameReviewSearchParams,
 } from "@/components/feature/game_review/game-review-search-form";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { PageHeader } from "@/components/ui/page-header";
 import {
   listGameReviews,
   type GameReviewStatus,
@@ -43,9 +44,7 @@ export default async function GameReviewsPage(
 
   return (
     <div className="space-y-6">
-      <header>
-        <h1 className="text-xl font-semibold">Game Review 管理</h1>
-      </header>
+      <PageHeader>Game Review</PageHeader>
 
       <Card>
         <CardContent>

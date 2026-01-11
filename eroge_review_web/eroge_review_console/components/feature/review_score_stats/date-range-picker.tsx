@@ -15,15 +15,12 @@ import {
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 
-interface DashboardDateRangePickerProps {
+interface DateRangePickerProps {
   from: string;
   to: string;
 }
 
-export function DashboardDateRangePicker({
-  from,
-  to,
-}: DashboardDateRangePickerProps) {
+export function DateRangePicker({ from, to }: DateRangePickerProps) {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
 

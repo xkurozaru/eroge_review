@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 
 import { GameReviewForm } from "@/components/feature/game_review/game-review-form";
+import { PageHeader } from "@/components/ui/page-header";
 import { createGameReview } from "@/lib/api/gameReviewApi";
 
 type SearchParams = {
@@ -64,7 +65,7 @@ export default async function GameReviewCreatePage(
 
   return (
     <div className="space-y-6">
-      <h1 className="text-xl font-semibold">Game Review 新規作成</h1>
+      <PageHeader>Game Review 新規作成</PageHeader>
 
       <GameReviewForm
         action={createAction}
