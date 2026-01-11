@@ -1,4 +1,5 @@
-from fastapi import Depends, FastAPI, Header, HTTPException
+from fastapi import Depends, FastAPI, HTTPException
+from fastapi.security import APIKeyHeader, HTTPAuthorizationCredentials, HTTPBearer
 
 from eroge_review_server.console.game_review.handler import router as game_review_router
 from eroge_review_server.console.game_spec.handler import router as game_spec_router
@@ -33,8 +34,13 @@ def create_app() -> FastAPI:
     return app
 
 
+# Security schemes
+console_token_scheme = APIKeyHeader(name="X-Console-Token", auto_error=False)
+cron_token_scheme = HTTPBearer(auto_error=False)
+
+
 def require_console_token(
-    x_console_token: str | None = Header(default=None, alias="X-Console-Token"),
+    token: str | None = Depends(console_token_scheme),
 ) -> None:
     """Token-based guard for console APIs.
 
@@ -43,25 +49,23 @@ def require_console_token(
 
     settings = get_settings()
     expected = settings.console_api_token
-    if x_console_token == expected:
+    if token == expected:
         return
     raise HTTPException(status_code=401, detail="Unauthorized")
 
 
 def require_cron_token(
-    authorization: str | None = Header(default=None, alias="Authorization"),
+    credentials: HTTPAuthorizationCredentials | None = Depends(cron_token_scheme),
 ) -> None:
     """Token-based guard for cron/internal APIs.
 
-    Requests must provide the expected token via Authorization: Bearer <token> header.
+    Requests must provide the expected token via の高さ位置と  Bearer <token> header.
     """
 
     settings = get_settings()
     expected = settings.cron_api_token
-    if authorization and authorization.startswith("Bearer "):
-        token = authorization.removeprefix("Bearer ").strip()
-        if token == expected:
-            return
+    if credentials and credentials.credentials == expected:
+        return
     raise HTTPException(status_code=401, detail="Unauthorized")
 
 

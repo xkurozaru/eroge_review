@@ -380,9 +380,7 @@ export interface operations {
                 page?: number;
                 page_size?: number;
             };
-            header?: {
-                "X-Console-Token"?: string | null;
-            };
+            header?: never;
             path?: never;
             cookie?: never;
         };
@@ -411,9 +409,7 @@ export interface operations {
     create_game_spec_game_specs_post: {
         parameters: {
             query?: never;
-            header?: {
-                "X-Console-Token"?: string | null;
-            };
+            header?: never;
             path?: never;
             cookie?: never;
         };
@@ -446,9 +442,7 @@ export interface operations {
     get_game_spec_game_specs__game_spec_id__get: {
         parameters: {
             query?: never;
-            header?: {
-                "X-Console-Token"?: string | null;
-            };
+            header?: never;
             path: {
                 game_spec_id: string;
             };
@@ -479,9 +473,7 @@ export interface operations {
     update_game_spec_game_specs__game_spec_id__put: {
         parameters: {
             query?: never;
-            header?: {
-                "X-Console-Token"?: string | null;
-            };
+            header?: never;
             path: {
                 game_spec_id: string;
             };
@@ -516,9 +508,7 @@ export interface operations {
     delete_game_spec_game_specs__game_spec_id__delete: {
         parameters: {
             query?: never;
-            header?: {
-                "X-Console-Token"?: string | null;
-            };
+            header?: never;
             path: {
                 game_spec_id: string;
             };
@@ -555,9 +545,7 @@ export interface operations {
                 page?: number;
                 page_size?: number;
             };
-            header?: {
-                "X-Console-Token"?: string | null;
-            };
+            header?: never;
             path?: never;
             cookie?: never;
         };
@@ -586,9 +574,7 @@ export interface operations {
     create_game_review_game_reviews_post: {
         parameters: {
             query?: never;
-            header?: {
-                "X-Console-Token"?: string | null;
-            };
+            header?: never;
             path?: never;
             cookie?: never;
         };
@@ -621,9 +607,7 @@ export interface operations {
     get_game_review_game_reviews__game_review_id__get: {
         parameters: {
             query?: never;
-            header?: {
-                "X-Console-Token"?: string | null;
-            };
+            header?: never;
             path: {
                 game_review_id: string;
             };
@@ -654,9 +638,7 @@ export interface operations {
     update_game_review_game_reviews__game_review_id__put: {
         parameters: {
             query?: never;
-            header?: {
-                "X-Console-Token"?: string | null;
-            };
+            header?: never;
             path: {
                 game_review_id: string;
             };
@@ -691,9 +673,7 @@ export interface operations {
     delete_game_review_game_reviews__game_review_id__delete: {
         parameters: {
             query?: never;
-            header?: {
-                "X-Console-Token"?: string | null;
-            };
+            header?: never;
             path: {
                 game_review_id: string;
             };
@@ -727,9 +707,7 @@ export interface operations {
                 since: string;
                 until: string;
             };
-            header?: {
-                "X-Console-Token"?: string | null;
-            };
+            header?: never;
             path?: never;
             cookie?: never;
         };
@@ -760,9 +738,7 @@ export interface operations {
             query?: {
                 date?: string | null;
             };
-            header?: {
-                Authorization?: string | null;
-            };
+            header?: never;
             path?: never;
             cookie?: never;
         };
