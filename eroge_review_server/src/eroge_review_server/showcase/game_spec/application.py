@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from sqlmodel import Session
 
 from eroge_review_server.common.game_spec.mapper import GameSpecRepository

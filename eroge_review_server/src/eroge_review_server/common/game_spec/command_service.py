@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from eroge_review_server.common.game_spec.mapper import GameSpecRepository
 from eroge_review_server.common.game_spec.model import GameSpec, GameSpecCreate, GameSpecUpdate
 

@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from sqlmodel import Session, func, select
 
 from eroge_review_server.common.game_spec.model import GameSpec, GameSpecCreate, GameSpecUpdate

@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from fastapi import FastAPI
 
 from eroge_review_server.showcase.game_spec.handler import router as game_spec_router
