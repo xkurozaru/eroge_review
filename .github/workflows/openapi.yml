@@ -44,8 +44,7 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p openapi
-          bash eroge_review_server/scripts/export_openapi.sh showcase openapi/showcase.yaml
-          bash eroge_review_server/scripts/export_openapi.sh console openapi/console.yaml
+          make gen-openapi
 
       - name: Set up Node
         uses: actions/setup-node@v4
@@ -56,21 +55,18 @@ jobs:
             eroge_review_web/eroge_review_console/package-lock.json
             eroge_review_web/eroge_review_showcase/package-lock.json
 
-      - name: Regenerate API types (console)
-        working-directory: eroge_review_web/eroge_review_console
+      - name: Install Node dependencies
         shell: bash
         run: |
           set -euo pipefail
-          npm ci
-          npm run gen:api
+          (cd eroge_review_web/eroge_review_console && npm ci)
+          (cd eroge_review_web/eroge_review_showcase && npm ci)
 
-      - name: Regenerate API types (showcase)
-        working-directory: eroge_review_web/eroge_review_showcase
+      - name: Regenerate TypeScript schemas
         shell: bash
         run: |
           set -euo pipefail
-          npm ci
-          npm run gen:api
+          make gen-ts-schema
 
       - name: Check diff
         shell: bash
@@ -81,10 +77,7 @@ jobs:
             eroge_review_web/eroge_review_console/lib/api/index.ts \
             eroge_review_web/eroge_review_showcase/lib/api/index.ts; then
             echo "Generated files are out of date. Please regenerate and commit the results:"
-            echo "  bash eroge_review_server/scripts/export_openapi.sh showcase openapi/showcase.yaml"
-            echo "  bash eroge_review_server/scripts/export_openapi.sh console openapi/console.yaml"
-            echo "  (cd eroge_review_web/eroge_review_console && npm ci && npm run gen:api)"
-            echo "  (cd eroge_review_web/eroge_review_showcase && npm ci && npm run gen:api)"
+            echo "  make gen-all"
             echo ""
             git --no-pager diff -- \
               openapi/ \
