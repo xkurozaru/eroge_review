@@ -9,6 +9,8 @@ paths:
       - game_spec
       summary: List Game Specs
       operationId: list_game_specs_game_specs_get
+      security:
+      - APIKeyHeader: []
       parameters:
       - name: title
         in: query
@@ -40,14 +42,6 @@ paths:
           type: integer
           default: 20
           title: Page Size
-      - name: X-Console-Token
-        in: header
-        required: false
-        schema:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: X-Console-Token
       responses:
         '200':
           description: Successful Response
@@ -66,15 +60,8 @@ paths:
       - game_spec
       summary: Create Game Spec
       operationId: create_game_spec_game_specs_post
-      parameters:
-      - name: X-Console-Token
-        in: header
-        required: false
-        schema:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: X-Console-Token
+      security:
+      - APIKeyHeader: []
       requestBody:
         required: true
         content:
@@ -100,6 +87,8 @@ paths:
       - game_spec
       summary: Get Game Spec
       operationId: get_game_spec_game_specs__game_spec_id__get
+      security:
+      - APIKeyHeader: []
       parameters:
       - name: game_spec_id
         in: path
@@ -107,14 +96,6 @@ paths:
         schema:
           type: string
           title: Game Spec Id
-      - name: X-Console-Token
-        in: header
-        required: false
-        schema:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: X-Console-Token
       responses:
         '200':
           description: Successful Response
@@ -133,6 +114,8 @@ paths:
       - game_spec
       summary: Update Game Spec
       operationId: update_game_spec_game_specs__game_spec_id__put
+      security:
+      - APIKeyHeader: []
       parameters:
       - name: game_spec_id
         in: path
@@ -140,14 +123,6 @@ paths:
         schema:
           type: string
           title: Game Spec Id
-      - name: X-Console-Token
-        in: header
-        required: false
-        schema:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: X-Console-Token
       requestBody:
         required: true
         content:
@@ -172,6 +147,8 @@ paths:
       - game_spec
       summary: Delete Game Spec
       operationId: delete_game_spec_game_specs__game_spec_id__delete
+      security:
+      - APIKeyHeader: []
       parameters:
       - name: game_spec_id
         in: path
@@ -179,14 +156,6 @@ paths:
         schema:
           type: string
           title: Game Spec Id
-      - name: X-Console-Token
-        in: header
-        required: false
-        schema:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: X-Console-Token
       responses:
         '200':
           description: Successful Response
@@ -205,6 +174,8 @@ paths:
       - game_review
       summary: List Game Reviews
       operationId: list_game_reviews_game_reviews_get
+      security:
+      - APIKeyHeader: []
       parameters:
       - name: title
         in: query
@@ -244,14 +215,6 @@ paths:
           type: integer
           default: 20
           title: Page Size
-      - name: X-Console-Token
-        in: header
-        required: false
-        schema:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: X-Console-Token
       responses:
         '200':
           description: Successful Response
@@ -270,15 +233,8 @@ paths:
       - game_review
       summary: Create Game Review
       operationId: create_game_review_game_reviews_post
-      parameters:
-      - name: X-Console-Token
-        in: header
-        required: false
-        schema:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: X-Console-Token
+      security:
+      - APIKeyHeader: []
       requestBody:
         required: true
         content:
@@ -304,6 +260,8 @@ paths:
       - game_review
       summary: Get Game Review
       operationId: get_game_review_game_reviews__game_review_id__get
+      security:
+      - APIKeyHeader: []
       parameters:
       - name: game_review_id
         in: path
@@ -311,14 +269,6 @@ paths:
         schema:
           type: string
           title: Game Review Id
-      - name: X-Console-Token
-        in: header
-        required: false
-        schema:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: X-Console-Token
       responses:
         '200':
           description: Successful Response
@@ -337,6 +287,8 @@ paths:
       - game_review
       summary: Update Game Review
       operationId: update_game_review_game_reviews__game_review_id__put
+      security:
+      - APIKeyHeader: []
       parameters:
       - name: game_review_id
         in: path
@@ -344,14 +296,6 @@ paths:
         schema:
           type: string
           title: Game Review Id
-      - name: X-Console-Token
-        in: header
-        required: false
-        schema:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: X-Console-Token
       requestBody:
         required: true
         content:
@@ -376,6 +320,8 @@ paths:
       - game_review
       summary: Delete Game Review
       operationId: delete_game_review_game_reviews__game_review_id__delete
+      security:
+      - APIKeyHeader: []
       parameters:
       - name: game_review_id
         in: path
@@ -383,14 +329,6 @@ paths:
         schema:
           type: string
           title: Game Review Id
-      - name: X-Console-Token
-        in: header
-        required: false
-        schema:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: X-Console-Token
       responses:
         '200':
           description: Successful Response
@@ -409,6 +347,8 @@ paths:
       - review_score_stats
       summary: List Review Score Stats Daily
       operationId: list_review_score_stats_daily_review_score_stats_daily_get
+      security:
+      - APIKeyHeader: []
       parameters:
       - name: since
         in: query
@@ -424,14 +364,6 @@ paths:
           type: string
           format: date
           title: Until
-      - name: X-Console-Token
-        in: header
-        required: false
-        schema:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: X-Console-Token
       responses:
         '200':
           description: Successful Response
@@ -454,6 +386,8 @@ paths:
       - cron
       summary: Run Review Score Stats Daily
       operationId: run_review_score_stats_daily_internal_cron_review_score_stats_daily_get
+      security:
+      - HTTPBearer: []
       parameters:
       - name: date
         in: query
@@ -464,20 +398,13 @@ paths:
             format: date
           - type: 'null'
           title: Date
-      - name: Authorization
-        in: header
-        required: false
-        schema:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Authorization
       responses:
         '200':
           description: Successful Response
           content:
             application/json:
-              schema: {}
+              schema:
+                $ref: '#/components/schemas/CronReviewScoreStatsDailyResponse'
         '422':
           description: Validation Error
           content:
@@ -486,6 +413,20 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
+    CronReviewScoreStatsDailyResponse:
+      properties:
+        stats_date:
+          type: string
+          format: date
+          title: Stats Date
+        execution_time:
+          type: number
+          title: Execution Time
+      type: object
+      required:
+      - stats_date
+      - execution_time
+      title: CronReviewScoreStatsDailyResponse
     GameReview:
       properties:
         id:
@@ -940,3 +881,11 @@ components:
       - msg
       - type
       title: ValidationError
+  securitySchemes:
+    APIKeyHeader:
+      type: apiKey
+      in: header
+      name: X-Console-Token
+    HTTPBearer:
+      type: http
+      scheme: bearer
