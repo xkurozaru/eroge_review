@@ -22,6 +22,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Install Task
+        uses: go-task/setup-task@v1
+
       - name: Set up uv
         uses: astral-sh/setup-uv@v3
         with:
@@ -32,19 +35,12 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: Install dependencies
+      - name: Install Python dependencies
         working-directory: eroge_review_server
         shell: bash
         run: |
           set -euo pipefail
           uv sync --frozen
-
-      - name: Regenerate OpenAPI
-        shell: bash
-        run: |
-          set -euo pipefail
-          mkdir -p openapi
-          make gen-openapi
 
       - name: Set up Node
         uses: actions/setup-node@v4
@@ -59,14 +55,15 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          (cd eroge_review_web/eroge_review_console && npm ci)
-          (cd eroge_review_web/eroge_review_showcase && npm ci)
+          npm ci --prefix eroge_review_web/eroge_review_console &
+          npm ci --prefix eroge_review_web/eroge_review_showcase &
+          wait
 
-      - name: Regenerate TypeScript schemas
+      - name: Regenerate schemas
         shell: bash
         run: |
           set -euo pipefail
-          make gen-ts-schema
+          task gen-all
 
       - name: Check diff
         shell: bash
@@ -77,7 +74,7 @@ jobs:
             eroge_review_web/eroge_review_console/lib/api/index.ts \
             eroge_review_web/eroge_review_showcase/lib/api/index.ts; then
             echo "Generated files are out of date. Please regenerate and commit the results:"
-            echo "  make gen-all"
+            echo "  task gen-all"
             echo ""
             git --no-pager diff -- \
               openapi/ \

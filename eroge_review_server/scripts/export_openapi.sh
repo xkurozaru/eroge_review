@@ -17,5 +17,7 @@ if [[ "$out" != /* ]]; then
 	out="$caller_pwd/$out"
 fi
 
+echo "🔄 Exporting OpenAPI spec $app → $out ..."
+
 # Use uv so it runs in the managed virtualenv.
 PYTHONPATH=src uv run python -m eroge_review_server.tools.export_openapi --app "$app" --out "$out"

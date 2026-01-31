@@ -1,0 +1,53 @@
+version: "3"
+
+tasks:
+  gen-openapi-console:
+    desc: "Generate OpenAPI specs for console"
+    dir: eroge_review_server
+    sh: bash -lc
+    cmds:
+      - bash scripts/export_openapi.sh console ../openapi/console.yaml
+    silent: true
+
+  gen-openapi-showcase:
+    desc: "Generate OpenAPI specs for showcase"
+    dir: eroge_review_server
+    sh: bash -lc
+    cmds:
+      - bash scripts/export_openapi.sh showcase ../openapi/showcase.yaml
+    silent: true
+
+  gen-openapi:
+    desc: "Generate OpenAPI specs"
+    deps:
+      - gen-openapi-console
+      - gen-openapi-showcase
+
+  gen-ts-console:
+    desc: "Generate TypeScript schemas for console"
+    dir: eroge_review_web/eroge_review_console
+    sh: bash -lc
+    cmds:
+      - npm run gen:api
+    silent: true
+
+  gen-ts-showcase:
+    desc: "Generate TypeScript schemas for showcase"
+    dir: eroge_review_web/eroge_review_showcase
+    sh: bash -lc
+    cmds:
+      - npm run gen:api
+    silent: true
+
+  gen-ts-schema:
+    desc: "Generate TypeScript schemas"
+    deps:
+      - gen-ts-console
+      - gen-ts-showcase
+
+  gen-all:
+    desc: "Run gen-openapi then gen-ts-schema"
+    sh: bash -lc
+    cmds:
+      - task gen-openapi
+      - task gen-ts-schema
