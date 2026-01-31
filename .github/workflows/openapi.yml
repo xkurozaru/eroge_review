@@ -55,8 +55,9 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          (cd eroge_review_web/eroge_review_console && npm ci)
-          (cd eroge_review_web/eroge_review_showcase && npm ci)
+          npm ci --prefix eroge_review_web/eroge_review_console &
+          npm ci --prefix eroge_review_web/eroge_review_showcase &
+          wait
 
       - name: Regenerate schemas
         shell: bash
