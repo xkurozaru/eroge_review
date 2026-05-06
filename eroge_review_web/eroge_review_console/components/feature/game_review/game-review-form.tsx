@@ -39,7 +39,6 @@ export function GameReviewForm(props: {
   action: (formData: FormData) => void;
   submitLabel: string;
   defaultValues?: {
-    title?: string;
     potential_score?: number | null;
     rating_score?: number | null;
     started_at?: string | null;
@@ -75,7 +74,7 @@ export function GameReviewForm(props: {
           "tr",
           "th",
           "td",
-        ])
+        ]),
       ),
       attributes: {
         ...(defaultSchema.attributes ?? {}),
@@ -95,13 +94,13 @@ export function GameReviewForm(props: {
   const isPublishedDefault = props.defaultValues?.is_published ?? false;
 
   const [potential, setPotential] = React.useState<number | null>(
-    potentialDefault
+    potentialDefault,
   );
   const [rating, setRating] = React.useState<number | null>(ratingDefault);
   const [isPublished, setIsPublished] =
     React.useState<boolean>(isPublishedDefault);
   const [body, setBody] = React.useState<string>(
-    props.defaultValues?.body ?? ""
+    props.defaultValues?.body ?? "",
   );
   const [publishError, setPublishError] = React.useState<string | null>(null);
 
@@ -163,7 +162,7 @@ export function GameReviewForm(props: {
         </div>
       );
     },
-    [showPublicToggle, isPublished, canPublish]
+    [showPublicToggle, isPublished, canPublish],
   );
 
   return (
@@ -176,15 +175,6 @@ export function GameReviewForm(props: {
         name="is_published"
         value={isPublished ? "true" : "false"}
       />
-
-      <div className="space-y-2">
-        <Label>レビュータイトル</Label>
-        <Input
-          name="title"
-          defaultValue={props.defaultValues?.title ?? ""}
-          required
-        />
-      </div>
 
       <div className="grid gap-4 md:grid-cols-3">
         <div className="space-y-2">

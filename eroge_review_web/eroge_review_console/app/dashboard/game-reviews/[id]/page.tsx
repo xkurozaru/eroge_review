@@ -53,7 +53,7 @@ function fromServerDatetime(value: string | null | undefined): string | null {
 }
 
 export default async function GameReviewDetailPage(
-  props: PageProps<"/dashboard/game-reviews/[id]">
+  props: PageProps<"/dashboard/game-reviews/[id]">,
 ) {
   const params = (await props.params) as Params;
   const data = await getGameReview(params.id);
@@ -61,10 +61,9 @@ export default async function GameReviewDetailPage(
   async function updateAction(formData: FormData) {
     "use server";
 
-    const title = String(formData.get("title") || "").trim();
     const potential = toRequiredInt(
       formData.get("potential_score"),
-      "potential_score"
+      "potential_score",
     );
     const rating = toNullableInt(formData.get("rating_score"));
     const startedAt = toDatetimeLocal(toNullable(formData.get("started_at")));
@@ -74,7 +73,6 @@ export default async function GameReviewDetailPage(
 
     await updateGameReview(params.id, {
       game_spec_id: data.game_spec_id,
-      title,
       potential_score: potential,
       rating_score: rating,
       started_at: startedAt,
@@ -113,7 +111,6 @@ export default async function GameReviewDetailPage(
         submitLabel="更新"
         showPublicToggle
         defaultValues={{
-          title: review.title,
           potential_score: review.potential_score,
           rating_score: review.rating_score,
           started_at: fromServerDatetime(review.started_at),

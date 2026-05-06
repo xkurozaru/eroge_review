@@ -19,7 +19,6 @@ class GameReviewStatus(str, Enum):
 class GameReviewBase(SQLModel):
     game_spec_id: str = Field(nullable=False, foreign_key="game_spec.id", sa_type=CHAR(32), index=True)
 
-    title: str
     potential_score: int
     rating_score: int | None
 
@@ -67,7 +66,6 @@ class GameReviewListItem(SQLModel):
     release_date: date
 
     game_review_id: str | None
-    review_title: str | None
     potential_score: int | None
     rating_score: int | None
     review_created_at: datetime | None
