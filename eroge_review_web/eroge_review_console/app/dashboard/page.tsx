@@ -1,15 +1,15 @@
-import { format, parse, subDays } from "date-fns";
+import { format, parse, subMonths } from "date-fns";
 
 import { StatsChartSection } from "@/components/feature/dashboard/stats-chart-section";
 import { ComingSoon } from "@/components/ui/coming-soon";
 import { PageHeader } from "@/components/ui/page-header";
-import { listReviewScoreStatsDaily } from "@/lib/api/reviewScoreStatsApi";
+import { listReviewScoreStatsMonthly } from "@/lib/api/reviewScoreStatsApi";
 
 export default async function DashboardPage(props: PageProps<"/dashboard">) {
   const searchParams = await props.searchParams;
 
   const defaultTo = new Date();
-  const defaultFrom = subDays(defaultTo, 29);
+  const defaultFrom = subMonths(defaultTo, 11);
 
   const fromStr =
     (searchParams.from as string) || format(defaultFrom, "yyyy-MM-dd");
@@ -29,7 +29,7 @@ export default async function DashboardPage(props: PageProps<"/dashboard">) {
   const since = format(from, "yyyy-MM-dd");
   const until = format(to, "yyyy-MM-dd");
 
-  const data = await listReviewScoreStatsDaily(since, until);
+  const data = await listReviewScoreStatsMonthly(since, until);
 
   return (
     <div className="space-y-6">
