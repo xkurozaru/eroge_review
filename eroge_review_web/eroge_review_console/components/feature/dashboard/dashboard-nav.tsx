@@ -1,7 +1,12 @@
 import Image from "next/image";
 import Link from "next/link";
 
-import { Gamepad2, LayoutDashboard, NotebookPen } from "lucide-react";
+import {
+  Gamepad2,
+  LayoutDashboard,
+  ListOrdered,
+  NotebookPen,
+} from "lucide-react";
 
 import { buttonVariants } from "@/components/ui/button";
 
@@ -36,6 +41,15 @@ export function DashboardNav() {
           className={buttonVariants({ variant: "outline", size: "icon" })}
         >
           <Gamepad2 className="h-5 w-5" />
+        </Link>
+
+        {/* Ranking アイコン */}
+        <Link
+          href="/dashboard/ranking"
+          aria-label="ランキング"
+          className={buttonVariants({ variant: "outline", size: "icon" })}
+        >
+          <ListOrdered className="h-5 w-5" />
         </Link>
 
         {/* Game Review アイコン */}
