@@ -78,15 +78,15 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/review-score-stats/daily": {
+    "/review-score-stats/monthly": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        /** List Review Score Stats Daily */
-        get: operations["list_review_score_stats_daily_review_score_stats_daily_get"];
+        /** List Review Score Stats Monthly */
+        get: operations["list_review_score_stats_monthly_review_score_stats_monthly_get"];
         put?: never;
         post?: never;
         delete?: never;
@@ -95,15 +95,15 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/internal/cron/review-score-stats/daily": {
+    "/internal/cron/review-score-stats/monthly": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        /** Run Review Score Stats Daily */
-        get: operations["run_review_score_stats_daily_internal_cron_review_score_stats_daily_get"];
+        /** Run Review Score Stats Monthly */
+        get: operations["run_review_score_stats_monthly_internal_cron_review_score_stats_monthly_get"];
         put?: never;
         post?: never;
         delete?: never;
@@ -116,13 +116,13 @@ export interface paths {
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
-        /** CronReviewScoreStatsDailyResponse */
-        CronReviewScoreStatsDailyResponse: {
+        /** CronReviewScoreStatsMonthlyResponse */
+        CronReviewScoreStatsMonthlyResponse: {
             /**
-             * Stats Date
+             * Stats Month
              * Format: date
              */
-            stats_date: string;
+            stats_month: string;
             /** Execution Time */
             execution_time: number;
         };
@@ -322,8 +322,8 @@ export interface components {
             /** Detail */
             detail?: components["schemas"]["ValidationError"][];
         };
-        /** ReviewScoreStatsDaily */
-        ReviewScoreStatsDaily: {
+        /** ReviewScoreStatsMonthly */
+        ReviewScoreStatsMonthly: {
             /** Id */
             id?: string;
             /**
@@ -349,12 +349,10 @@ export interface components {
             /** Potential Stddev */
             potential_stddev?: number | null;
             /**
-             * Stats Date
+             * Stats Month
              * Format: date
              */
-            stats_date: string;
-            /** Scope */
-            scope: string;
+            stats_month: string;
         };
         /** ValidationError */
         ValidationError: {
@@ -703,7 +701,7 @@ export interface operations {
             };
         };
     };
-    list_review_score_stats_daily_review_score_stats_daily_get: {
+    list_review_score_stats_monthly_review_score_stats_monthly_get: {
         parameters: {
             query: {
                 since: string;
@@ -721,7 +719,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ReviewScoreStatsDaily"][];
+                    "application/json": components["schemas"]["ReviewScoreStatsMonthly"][];
                 };
             };
             /** @description Validation Error */
@@ -735,7 +733,7 @@ export interface operations {
             };
         };
     };
-    run_review_score_stats_daily_internal_cron_review_score_stats_daily_get: {
+    run_review_score_stats_monthly_internal_cron_review_score_stats_monthly_get: {
         parameters: {
             query?: {
                 date?: string | null;
@@ -752,7 +750,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["CronReviewScoreStatsDailyResponse"];
+                    "application/json": components["schemas"]["CronReviewScoreStatsMonthlyResponse"];
                 };
             };
             /** @description Validation Error */

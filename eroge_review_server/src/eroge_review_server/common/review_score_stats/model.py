@@ -18,17 +18,13 @@ class ReviewScoreStatsValues(SQLModel):
     potential_stddev: float | None = Field(default=None, nullable=True)
 
 
-class ReviewScoreStatsDailyBase(ReviewScoreStatsValues):
-    """Daily snapshot of review score distributions.
+class ReviewScoreStatsMonthlyBase(ReviewScoreStatsValues):
+    """Monthly snapshot of review score distributions.
 
-    This table is meant to be scope-driven so that new aggregation windows/filters
-    can be added later without schema changes.
-
-    Examples of scope: "published_all", "published_90d".
+    This table stores a single aggregate snapshot for each month.
     """
 
-    stats_date: date = Field(nullable=False, index=True)
-    scope: str = Field(nullable=False, index=True)
+    stats_month: date = Field(nullable=False, index=True)
 
 
 class ReviewScoreStatsComputed(ReviewScoreStatsValues):
@@ -40,6 +36,6 @@ class ReviewScoreStatsComputed(ReviewScoreStatsValues):
     pass
 
 
-class ReviewScoreStatsDaily(ReviewScoreStatsDailyBase, IdTimestampsMixin, table=True):
-    __tablename__ = "review_score_stats_daily"
-    __table_args__ = (UniqueConstraint("stats_date", "scope", name="uq_review_score_stats_daily_date_scope"),)
+class ReviewScoreStatsMonthly(ReviewScoreStatsMonthlyBase, IdTimestampsMixin, table=True):
+    __tablename__ = "review_score_stats_monthly"
+    __table_args__ = (UniqueConstraint("stats_month", name="uq_review_score_stats_monthly_month"),)

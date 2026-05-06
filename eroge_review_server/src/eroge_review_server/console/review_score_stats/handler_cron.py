@@ -13,20 +13,20 @@ from eroge_review_server.core.db import get_session
 router = APIRouter(prefix="/internal/cron/review-score-stats", tags=["cron"])
 
 
-class CronReviewScoreStatsDailyResponse(BaseModel):
-    stats_date: date
+class CronReviewScoreStatsMonthlyResponse(BaseModel):
+    stats_month: date
     execution_time: float
 
 
-@router.get("/daily")
-def run_review_score_stats_daily(
+@router.get("/monthly")
+def run_review_score_stats_monthly(
     target_date: date | None = Query(default=None, alias="date"),
     session: Session = Depends(get_session),
-) -> CronReviewScoreStatsDailyResponse:
+) -> CronReviewScoreStatsMonthlyResponse:
     start_time = time()
 
     app = ConsoleReviewScoreStatsApplication(session)
-    date = app.run_daily_snapshot(stats_date=target_date)
+    stats_month = app.run_monthly_snapshot(stats_month=target_date)
 
     execution_time = time() - start_time
-    return CronReviewScoreStatsDailyResponse(stats_date=date, execution_time=execution_time)
+    return CronReviewScoreStatsMonthlyResponse(stats_month=stats_month, execution_time=execution_time)

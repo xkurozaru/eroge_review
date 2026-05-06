@@ -341,12 +341,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/HTTPValidationError'
-  /review-score-stats/daily:
+  /review-score-stats/monthly:
     get:
       tags:
       - review_score_stats
-      summary: List Review Score Stats Daily
-      operationId: list_review_score_stats_daily_review_score_stats_daily_get
+      summary: List Review Score Stats Monthly
+      operationId: list_review_score_stats_monthly_review_score_stats_monthly_get
       security:
       - APIKeyHeader: []
       parameters:
@@ -372,20 +372,20 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/ReviewScoreStatsDaily'
-                title: Response List Review Score Stats Daily Review Score Stats Daily Get
+                  $ref: '#/components/schemas/ReviewScoreStatsMonthly'
+                title: Response List Review Score Stats Monthly Review Score Stats Monthly Get
         '422':
           description: Validation Error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/HTTPValidationError'
-  /internal/cron/review-score-stats/daily:
+  /internal/cron/review-score-stats/monthly:
     get:
       tags:
       - cron
-      summary: Run Review Score Stats Daily
-      operationId: run_review_score_stats_daily_internal_cron_review_score_stats_daily_get
+      summary: Run Review Score Stats Monthly
+      operationId: run_review_score_stats_monthly_internal_cron_review_score_stats_monthly_get
       security:
       - HTTPBearer: []
       parameters:
@@ -404,7 +404,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CronReviewScoreStatsDailyResponse'
+                $ref: '#/components/schemas/CronReviewScoreStatsMonthlyResponse'
         '422':
           description: Validation Error
           content:
@@ -413,20 +413,20 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    CronReviewScoreStatsDailyResponse:
+    CronReviewScoreStatsMonthlyResponse:
       properties:
-        stats_date:
+        stats_month:
           type: string
           format: date
-          title: Stats Date
+          title: Stats Month
         execution_time:
           type: number
           title: Execution Time
       type: object
       required:
-      - stats_date
+      - stats_month
       - execution_time
-      title: CronReviewScoreStatsDailyResponse
+      title: CronReviewScoreStatsMonthlyResponse
     GameReview:
       properties:
         id:
@@ -789,7 +789,7 @@ components:
           title: Detail
       type: object
       title: HTTPValidationError
-    ReviewScoreStatsDaily:
+    ReviewScoreStatsMonthly:
       properties:
         id:
           type: string
@@ -828,20 +828,16 @@ components:
           - type: number
           - type: 'null'
           title: Potential Stddev
-        stats_date:
+        stats_month:
           type: string
           format: date
-          title: Stats Date
-        scope:
-          type: string
-          title: Scope
+          title: Stats Month
       type: object
       required:
       - rating_count
       - potential_count
-      - stats_date
-      - scope
-      title: ReviewScoreStatsDaily
+      - stats_month
+      title: ReviewScoreStatsMonthly
     ValidationError:
       properties:
         loc:

@@ -23,10 +23,9 @@ CREATE TABLE IF NOT EXISTS game_review (
     updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
-CREATE TABLE IF NOT EXISTS review_score_stats_daily (
+CREATE TABLE IF NOT EXISTS review_score_stats_monthly (
     id CHAR(32) PRIMARY KEY,
-    stats_date DATE NOT NULL,
-    scope TEXT NOT NULL,
+    stats_month DATE NOT NULL,
 
     rating_count INTEGER NOT NULL,
     rating_avg DOUBLE PRECISION,
@@ -39,5 +38,5 @@ CREATE TABLE IF NOT EXISTS review_score_stats_daily (
     created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT now(),
 
-    CONSTRAINT uq_review_score_stats_daily_date_scope UNIQUE (stats_date, scope)
+    CONSTRAINT uq_review_score_stats_monthly_month UNIQUE (stats_month)
 );
