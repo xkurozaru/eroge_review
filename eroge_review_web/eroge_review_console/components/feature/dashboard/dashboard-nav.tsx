@@ -43,15 +43,6 @@ export function DashboardNav() {
           <Gamepad2 className="h-5 w-5" />
         </Link>
 
-        {/* Ranking アイコン */}
-        <Link
-          href="/dashboard/ranking"
-          aria-label="ランキング"
-          className={buttonVariants({ variant: "outline", size: "icon" })}
-        >
-          <ListOrdered className="h-5 w-5" />
-        </Link>
-
         {/* Game Review アイコン */}
         <Link
           href="/dashboard/game-reviews"
@@ -59,6 +50,15 @@ export function DashboardNav() {
           className={buttonVariants({ variant: "outline", size: "icon" })}
         >
           <NotebookPen className="h-5 w-5" />
+        </Link>
+
+        {/* Ranking アイコン */}
+        <Link
+          href="/dashboard/ranking"
+          aria-label="ランキング"
+          className={buttonVariants({ variant: "outline", size: "icon" })}
+        >
+          <ListOrdered className="h-5 w-5" />
         </Link>
       </nav>
     </aside>

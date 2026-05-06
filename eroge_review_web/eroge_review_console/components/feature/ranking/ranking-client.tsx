@@ -101,36 +101,38 @@ function RankingTable({
       <CardHeader>
         <CardTitle>ランキング</CardTitle>
       </CardHeader>
-      <CardContent className="overflow-x-auto">
-        <Table>
-          <TableHeader>
-            <TableRow className="text-left">
-              <TableHead>順位</TableHead>
-              <TableHead>タイトル</TableHead>
-              <TableHead>ブランド</TableHead>
-              <TableHead>リリース日</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {rows.map((item, index) => (
-              <TableRow key={item.id ?? `${item.title}-${index}`}>
-                <TableCell className="font-medium">
-                  {index < sorted.length ? index + 1 : "-"}
-                </TableCell>
-                <TableCell>{item.title}</TableCell>
-                <TableCell>{item.brand}</TableCell>
-                <TableCell>{item.release_date}</TableCell>
+      <CardContent className="p-0">
+        <div className="max-h-[55vh] min-h-[12rem] overflow-auto">
+          <Table>
+            <TableHeader>
+              <TableRow className="text-left">
+                <TableHead>順位</TableHead>
+                <TableHead>タイトル</TableHead>
+                <TableHead>ブランド</TableHead>
+                <TableHead>リリース日</TableHead>
               </TableRow>
-            ))}
-            {rows.length === 0 && (
-              <TableRow>
-                <TableCell className="py-6 text-muted-foreground" colSpan={4}>
-                  0件
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
+            </TableHeader>
+            <TableBody>
+              {rows.map((item, index) => (
+                <TableRow key={item.id ?? `${item.title}-${index}`}>
+                  <TableCell className="font-medium">
+                    {index < sorted.length ? index + 1 : "-"}
+                  </TableCell>
+                  <TableCell>{item.title}</TableCell>
+                  <TableCell>{item.brand}</TableCell>
+                  <TableCell>{item.release_date}</TableCell>
+                </TableRow>
+              ))}
+              {rows.length === 0 && (
+                <TableRow>
+                  <TableCell className="py-6 text-muted-foreground" colSpan={4}>
+                    0件
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </div>
       </CardContent>
     </Card>
   );
