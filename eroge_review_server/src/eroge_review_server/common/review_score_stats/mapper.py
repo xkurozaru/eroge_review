@@ -6,18 +6,21 @@ from sqlalchemy import func
 from sqlmodel import Session, select
 
 from eroge_review_server.common.game_review.model import GameReview
-from eroge_review_server.common.review_score_stats.model import ReviewScoreStatsComputed, ReviewScoreStatsDaily
+from eroge_review_server.common.review_score_stats.model import (
+    ReviewScoreStatsComputed,
+    ReviewScoreStatsMonthly,
+)
 
 
 class ReviewScoreStatsRepository:
     def __init__(self, session: Session) -> None:
         self._session = session
 
-    def list_daily(self, *, since: date, until: date) -> list[ReviewScoreStatsDaily]:
+    def list_monthly(self, *, since: date, until: date) -> list[ReviewScoreStatsMonthly]:
         statement = (
-            select(ReviewScoreStatsDaily)
-            .where(ReviewScoreStatsDaily.stats_date >= since, ReviewScoreStatsDaily.stats_date <= until)
-            .order_by(ReviewScoreStatsDaily.stats_date)
+            select(ReviewScoreStatsMonthly)
+            .where(ReviewScoreStatsMonthly.stats_month >= since, ReviewScoreStatsMonthly.stats_month <= until)
+            .order_by(ReviewScoreStatsMonthly.stats_month)
         )
         return list(self._session.exec(statement).all())
 
@@ -45,24 +48,19 @@ class ReviewScoreStatsRepository:
         # Map by field names (SQLModel/Pydantic will coerce types as needed).
         return ReviewScoreStatsComputed.model_validate(dict(row._mapping))
 
-    def upsert_daily(
+    def upsert_monthly(
         self,
         *,
-        stats_date: date,
-        scope: str,
+        stats_month: date,
         computed: ReviewScoreStatsComputed,
     ) -> None:
         existing = self._session.exec(
-            select(ReviewScoreStatsDaily).where(
-                ReviewScoreStatsDaily.stats_date == stats_date,
-                ReviewScoreStatsDaily.scope == scope,
-            )
+            select(ReviewScoreStatsMonthly).where(ReviewScoreStatsMonthly.stats_month == stats_month)
         ).one_or_none()
 
         if existing is None:
-            model = ReviewScoreStatsDaily(
-                stats_date=stats_date,
-                scope=scope,
+            model = ReviewScoreStatsMonthly(
+                stats_month=stats_month,
                 rating_count=computed.rating_count,
                 rating_avg=computed.rating_avg,
                 rating_stddev=computed.rating_stddev,

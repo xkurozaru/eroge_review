@@ -14,14 +14,13 @@ import {
   YAxis,
 } from "recharts";
 
-import type { ReviewScoreStatsDaily } from "@/lib/api/reviewScoreStatsApi";
+import type { ReviewScoreStatsMonthly } from "@/lib/api/reviewScoreStatsApi";
 
 interface StatsChartProps {
-  data: ReviewScoreStatsDaily[];
-  scope: string;
+  data: ReviewScoreStatsMonthly[];
 }
 
-export function StatsChart({ data, scope }: StatsChartProps) {
+export function StatsChart({ data }: StatsChartProps) {
   const [hiddenSeries, setHiddenSeries] = useState<Set<string>>(new Set());
 
   const toggleSeries = (dataKey: string | number) => {
@@ -38,7 +37,6 @@ export function StatsChart({ data, scope }: StatsChartProps) {
   };
   const chartData = useMemo(() => {
     return data
-      .filter((item) => item.scope === scope)
       .map((item) => {
         const ratingAvg = item.rating_avg ?? 0;
         const potentialAvg = item.potential_avg ?? 0;
@@ -46,7 +44,7 @@ export function StatsChart({ data, scope }: StatsChartProps) {
         const potentialStddev = item.potential_stddev ?? 0;
 
         return {
-          date: item.stats_date,
+          date: item.stats_month,
           ratingAvg,
           potentialAvg,
           ratingCount: item.rating_count,
@@ -58,7 +56,7 @@ export function StatsChart({ data, scope }: StatsChartProps) {
         };
       })
       .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
-  }, [data, scope]);
+  }, [data]);
 
   return (
     <ResponsiveContainer width="100%" height={400}>
@@ -68,7 +66,7 @@ export function StatsChart({ data, scope }: StatsChartProps) {
           dataKey="date"
           tickFormatter={(value) => {
             const date = new Date(value);
-            return `${date.getMonth() + 1}/${date.getDate()}`;
+            return `${date.getFullYear()}/${String(date.getMonth() + 1).padStart(2, "0")}`;
           }}
         />
         <YAxis
@@ -83,7 +81,8 @@ export function StatsChart({ data, scope }: StatsChartProps) {
         />
         <Tooltip
           labelFormatter={(value) => {
-            return new Date(value as string).toLocaleDateString("ja-JP");
+            const date = new Date(value as string);
+            return `${date.getFullYear()}年${date.getMonth() + 1}月`;
           }}
           formatter={(value, name, props) => {
             const numValue = typeof value === "number" ? value : 0;
