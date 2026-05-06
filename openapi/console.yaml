@@ -443,9 +443,6 @@ components:
         game_spec_id:
           type: string
           title: Game Spec Id
-        title:
-          type: string
-          title: Title
         potential_score:
           type: integer
           title: Potential Score
@@ -480,7 +477,6 @@ components:
       type: object
       required:
       - game_spec_id
-      - title
       - potential_score
       - rating_score
       - started_at
@@ -492,9 +488,6 @@ components:
         game_spec_id:
           type: string
           title: Game Spec Id
-        title:
-          type: string
-          title: Title
         potential_score:
           type: integer
           title: Potential Score
@@ -527,7 +520,6 @@ components:
       type: object
       required:
       - game_spec_id
-      - title
       - potential_score
       - rating_score
       - started_at
@@ -585,11 +577,6 @@ components:
           - type: string
           - type: 'null'
           title: Game Review Id
-        review_title:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Review Title
         potential_score:
           anyOf:
           - type: integer
@@ -625,7 +612,6 @@ components:
       - brand
       - release_date
       - game_review_id
-      - review_title
       - potential_score
       - rating_score
       - review_created_at
@@ -667,9 +653,6 @@ components:
         game_spec_id:
           type: string
           title: Game Spec Id
-        title:
-          type: string
-          title: Title
         potential_score:
           type: integer
           title: Potential Score
@@ -701,7 +684,6 @@ components:
       type: object
       required:
       - game_spec_id
-      - title
       - potential_score
       - rating_score
       - started_at

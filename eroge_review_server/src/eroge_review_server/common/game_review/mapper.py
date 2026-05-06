@@ -76,7 +76,6 @@ class GameReviewRepository:
                     brand=game_spec.brand,
                     release_date=game_spec.release_date,
                     game_review_id=(game_review.id if game_review else None),
-                    review_title=(game_review.title if game_review else None),
                     potential_score=(game_review.potential_score if game_review else None),
                     rating_score=(game_review.rating_score if game_review else None),
                     review_created_at=(game_review.created_at if game_review else None),
@@ -110,7 +109,6 @@ class GameReviewRepository:
     def create(self, payload: GameReviewCreate) -> GameReview:
         model = GameReview(
             game_spec_id=payload.game_spec_id,
-            title=payload.title,
             potential_score=payload.potential_score,
             rating_score=payload.rating_score,
             started_at=payload.started_at,
@@ -128,7 +126,6 @@ class GameReviewRepository:
         if model is None:
             return None
 
-        model.title = payload.title
         model.potential_score = payload.potential_score
         model.rating_score = payload.rating_score
         model.started_at = payload.started_at

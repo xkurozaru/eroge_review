@@ -27,7 +27,7 @@ function toRequiredInt(value: FormDataEntryValue | null, name: string): number {
 }
 
 export default async function GameReviewCreatePage(
-  props: PageProps<"/dashboard/game-reviews/create">
+  props: PageProps<"/dashboard/game-reviews/create">,
 ) {
   const searchParams = (await props.searchParams) as SearchParams;
   const gameSpecId = (searchParams.game_spec_id || "").trim();
@@ -39,10 +39,9 @@ export default async function GameReviewCreatePage(
       throw new Error("game_spec_id is required");
     }
 
-    const title = String(formData.get("title") || "").trim();
     const potential = toRequiredInt(
       formData.get("potential_score"),
-      "potential_score"
+      "potential_score",
     );
     const rating = toNullableInt(formData.get("rating_score"));
     const startedAt = toNullable(formData.get("started_at"));
@@ -51,7 +50,6 @@ export default async function GameReviewCreatePage(
 
     await createGameReview({
       game_spec_id: gameSpecId,
-      title,
       potential_score: potential,
       rating_score: rating,
       started_at: startedAt,

@@ -13,7 +13,6 @@ CREATE TABLE IF NOT EXISTS game_spec (
 CREATE TABLE IF NOT EXISTS game_review (
     id CHAR(32) PRIMARY KEY,
     game_spec_id CHAR(32) NOT NULL UNIQUE REFERENCES game_spec(id) ON DELETE CASCADE,
-    title TEXT NOT NULL,
     potential_score INTEGER NOT NULL,
     rating_score INTEGER,
     started_at TIMESTAMPTZ,

@@ -142,8 +142,6 @@ export interface components {
             updated_at?: string;
             /** Game Spec Id */
             game_spec_id: string;
-            /** Title */
-            title: string;
             /** Potential Score */
             potential_score: number;
             /** Rating Score */
@@ -167,8 +165,6 @@ export interface components {
         GameReviewCreate: {
             /** Game Spec Id */
             game_spec_id: string;
-            /** Title */
-            title: string;
             /** Potential Score */
             potential_score: number;
             /** Rating Score */
@@ -215,8 +211,6 @@ export interface components {
             release_date: string;
             /** Game Review Id */
             game_review_id: string | null;
-            /** Review Title */
-            review_title: string | null;
             /** Potential Score */
             potential_score: number | null;
             /** Rating Score */
@@ -251,8 +245,6 @@ export interface components {
         GameReviewUpdate: {
             /** Game Spec Id */
             game_spec_id: string;
-            /** Title */
-            title: string;
             /** Potential Score */
             potential_score: number;
             /** Rating Score */
