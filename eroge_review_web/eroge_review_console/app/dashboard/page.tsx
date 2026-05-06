@@ -1,4 +1,4 @@
-import { format, parse, subMonths } from "date-fns";
+import { endOfMonth, format, parse, startOfMonth, subMonths } from "date-fns";
 
 import { StatsChartSection } from "@/components/feature/dashboard/stats-chart-section";
 import { ComingSoon } from "@/components/ui/coming-soon";
@@ -8,8 +8,8 @@ import { listReviewScoreStatsMonthly } from "@/lib/api/reviewScoreStatsApi";
 export default async function DashboardPage(props: PageProps<"/dashboard">) {
   const searchParams = await props.searchParams;
 
-  const defaultTo = new Date();
-  const defaultFrom = subMonths(defaultTo, 11);
+  const defaultTo = endOfMonth(new Date());
+  const defaultFrom = startOfMonth(subMonths(defaultTo, 11));
 
   const fromStr =
     (searchParams.from as string) || format(defaultFrom, "yyyy-MM-dd");
