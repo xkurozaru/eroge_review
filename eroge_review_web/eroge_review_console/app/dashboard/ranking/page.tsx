@@ -1,6 +1,6 @@
 import { PageHeader } from "@/components/ui/page-header";
 import { listGameSpecs } from "@/lib/api/gameSpecApi";
-import { RankingClient } from "./ranking-client";
+import { RankingClient } from "../../../components/feature/ranking/ranking-client";
 
 export default async function RankingPage() {
   const data = await listGameSpecs({ page: 1, pageSize: 50 });
